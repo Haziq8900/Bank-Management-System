@@ -1,3 +1,5 @@
+package Backend;
+
 import java.io.*;
 import java.util.*;
 
@@ -47,7 +49,7 @@ public class ATMSystem {
         User user = findUserByCardNum(cardNum);
 
         if (user == null) {
-            System.out.println("User Not Found!");
+            System.out.println("Backend.User Not Found!");
             return null;
         }
 
@@ -150,7 +152,7 @@ public class ATMSystem {
 
     public void registerNewUser() {
     Scanner sc = new Scanner(System.in);
-    System.out.println("=== New User Registration ===");
+    System.out.println("=== New Backend.User Registration ===");
 
     System.out.print("Enter a 16-digit card number: ");
     String cardNum = sc.nextLine().trim();
@@ -192,6 +194,6 @@ public class ATMSystem {
     User newUser = new User(cardNum, pin, balance);
     users.add(newUser);
     saveUsersToFile();
-    System.out.println("User registered successfully!");
+    System.out.println("Backend.User registered successfully!");
     }
 }

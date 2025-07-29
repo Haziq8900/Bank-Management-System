@@ -1,3 +1,6 @@
+import Backend.ATMSystem;
+import Backend.User;
+
 import java.util.*;
 
 public class Main {
@@ -8,8 +11,8 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("***** WELCOME TO SONERI BANK ATM *****");
-        System.out.println("1. Existing User");
-        System.out.println("2. New User");
+        System.out.println("1. Existing Backend.User");
+        System.out.println("2. New Backend.User");
         System.out.print("Select Option: ");
         
 

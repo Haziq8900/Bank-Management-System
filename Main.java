@@ -1,38 +1,10 @@
-import Backend.ATMSystem;
-import Backend.User;
 import View.MainFrame;
 
 import javax.swing.*;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater((Runnable) new MainFrame());
+        SwingUtilities.invokeLater(MainFrame::new);
     }
-//        ATMSystem atm = new ATMSystem();
-//        atm.loadUsersFromFile();
-//
-//        Scanner sc = new Scanner(System.in);
-//
-//        System.out.println("***** WELCOME TO SONERI BANK ATM *****");
-//        System.out.println("1. Existing Backend.User");
-//        System.out.println("2. New Backend.User");
-//        System.out.print("Select Option: ");
-//
-//
-//        int choice = sc.nextInt();
-//        sc.nextLine();
-//
-//        if (choice == 1) {
-//            User loggedInUser = atm.loginExistingUser();
-//            if (loggedInUser != null) {
-//                atm.showMenu(loggedInUser);
-//            }
-//        } else if(choice == 2) {
-//            atm.registerNewUser();
-//        } else {
-//            System.out.println("Invalid option. Exiting...");
-//        }
-//    }
 }

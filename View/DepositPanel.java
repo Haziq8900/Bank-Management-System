@@ -8,30 +8,30 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class DepositPanel extends JPanel {
-    private ATMPanel parentATMPanel;
+    // Changed: private ATMPanel parentATMPanel;
+    private BankPanel parentBankPanel; // Now takes BankPanel as parent
 
-    public DepositPanel(ATMPanel parentATMPanel) {
-        this.parentATMPanel = parentATMPanel;
+    // Changed constructor: public DepositPanel(ATMPanel parentATMPanel)
+    public DepositPanel(BankPanel parentBankPanel) {
+        this.parentBankPanel = parentBankPanel; // Assign the new parent
         setLayout(new BorderLayout(0, 30));
         setBackground(new Color(230, 240, 250));
 
-        // --- Title Label ---
         JLabel titleLabel = new JLabel("Deposit Funds", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 38));
-        titleLabel.setForeground(new Color(155, 89, 182));
+        titleLabel.setForeground(new Color(155, 89, 182)); // Purple color for Deposit theme
         titleLabel.setBorder(new EmptyBorder(25, 0, 15, 0));
         add(titleLabel, BorderLayout.NORTH);
 
-        // --- Input Area (Central Focus resembling a transaction screen) ---
         JPanel inputContainerPanel = new JPanel(new GridBagLayout());
         inputContainerPanel.setBackground(new Color(255, 255, 255));
         inputContainerPanel.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(190, 150, 220), 3, true),
+            new LineBorder(new Color(221, 160, 221), 3, true), // Softer purple border, rounded
             new EmptyBorder(40, 60, 40, 60)
         ));
-        inputContainerPanel.setPreferredSize(new Dimension(550, 250));
-        inputContainerPanel.setMaximumSize(new Dimension(550, 250));
-        inputContainerPanel.setMinimumSize(new Dimension(450, 200));
+        inputContainerPanel.setPreferredSize(new Dimension(650, 300));
+        inputContainerPanel.setMaximumSize(new Dimension(650, 300));
+        inputContainerPanel.setMinimumSize(new Dimension(550, 250));
 
         JPanel centerWrapperPanel = new JPanel(new GridBagLayout());
         centerWrapperPanel.setBackground(getBackground());
@@ -42,81 +42,101 @@ public class DepositPanel extends JPanel {
         gbc.insets = new Insets(15, 10, 15, 10);
         gbc.anchor = GridBagConstraints.EAST;
 
-        // Label for amount input
         gbc.gridx = 0; gbc.gridy = 0;
-        JLabel amountLabel = new JLabel("Enter Amount to Deposit:");
+        JLabel accountLabel = new JLabel("Account Number:");
+        accountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+        accountLabel.setForeground(new Color(80, 80, 80));
+        inputContainerPanel.add(accountLabel, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        JTextField accountField = new JTextField(15);
+        accountField.setFont(new Font("Consolas", Font.PLAIN, 20));
+        accountField.setForeground(Color.BLACK);
+        accountField.setPreferredSize(new Dimension(accountField.getPreferredSize().width, 40));
+        accountField.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(180, 180, 180), 1),
+            new EmptyBorder(5, 10, 5, 10)
+        ));
+        inputContainerPanel.add(accountField, gbc);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.EAST;
+
+        gbc.gridx = 0; gbc.gridy = 1;
+        JLabel amountLabel = new JLabel("Amount to Deposit:");
         amountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         amountLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(amountLabel, gbc);
 
-        // Text field for amount input
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridx = 1; gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill horizontally
-        gbc.weightx = 1.0; // Give all extra horizontal space to this column
-
-        JTextField amountField = new JTextField(12);
-        amountField.setFont(new Font("Consolas", Font.PLAIN, 24));
-        amountField.setForeground(Color.BLACK); // Ensure text color is black
-        amountField.setPreferredSize(new Dimension(amountField.getPreferredSize().width, 40)); // Keep fixed height, let weightx manage width
-
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        JTextField amountField = new JTextField(15);
+        amountField.setFont(new Font("Consolas", Font.PLAIN, 20));
+        amountField.setForeground(Color.BLACK);
+        amountField.setPreferredSize(new Dimension(amountField.getPreferredSize().width, 40));
         amountField.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(180, 180, 180), 1),
             new EmptyBorder(5, 10, 5, 10)
         ));
         inputContainerPanel.add(amountField, gbc);
 
-        // IMPORTANT: Reset fill and weightx for the next component if it should not expand
-        // This is good practice to prevent unintended layout behavior for subsequent components.
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0.0;
 
-        // Deposit Button
-        gbc.gridx = 0; gbc.gridy = 1;
-        gbc.gridwidth = 2; // Span across two columns
-        gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
-        gbc.insets = new Insets(25, 10, 10, 10); // More top padding for the button
+        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(30, 10, 10, 10);
         JButton depositButton = createStyledButton("Deposit", new Color(155, 89, 182));
         inputContainerPanel.add(depositButton, gbc);
 
-        // --- Back Button ---
-        JButton backButton = createStyledButton("Back to ATM Menu", new Color(96, 125, 139));
-        backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
+        // Changed: parentATMPanel.showATMMainMenu()
+        JButton backButton = createStyledButton("Back to Bank Menu", new Color(96, 125, 139));
+        backButton.addActionListener(e -> parentBankPanel.showBankMainMenu()); // Call BankPanel's method
 
         JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
         bottomButtonPanel.setBackground(getBackground());
         bottomButtonPanel.add(backButton);
         add(bottomButtonPanel, BorderLayout.SOUTH);
 
-        // --- Action Listener for Deposit Button ---
         depositButton.addActionListener(e -> {
+            String accountNumber = accountField.getText().trim();
             String amountText = amountField.getText().trim();
-            if (amountText.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter an amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
+
+            if (accountNumber.isEmpty() || amountText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Both account number and amount are required.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
             try {
                 double amount = Double.parseDouble(amountText);
-                if (amount > 0) {
-                    JOptionPane.showMessageDialog(this,
-                            String.format("Successfully deposited $%,.2f.%nYour transaction is being processed.", amount),
-                            "Deposit Successful", JOptionPane.INFORMATION_MESSAGE);
-                    amountField.setText("");
-                } else {
+                if (amount <= 0) {
                     JOptionPane.showMessageDialog(this, "Please enter a positive amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+
+                JOptionPane.showMessageDialog(this,
+                        String.format("Depositing $%,.2f into account %s.%nTransaction is being processed.", amount, accountNumber),
+                        "Deposit Successful", JOptionPane.INFORMATION_MESSAGE);
+                
+                accountField.setText("");
+                amountField.setText("");
+                // parentBankPanel.showBankMainMenu(); // Optionally go back
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid amount. Please enter numbers only (e.g., 100.00).", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
 
-    /**
-     * Helper method to create consistently styled buttons with enhanced hover effects.
-     */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(200, 55));
+        button.setPreferredSize(new Dimension(220, 55));
         button.setFont(new Font("Segoe UI", Font.BOLD, 19));
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);

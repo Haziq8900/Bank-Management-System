@@ -1,4 +1,4 @@
-package Model;
+package Backend;
 
 public class Account {
 

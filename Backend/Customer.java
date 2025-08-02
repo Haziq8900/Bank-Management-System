@@ -1,4 +1,4 @@
-package Model;
+package Backend;
 
 public class Customer {
     private int customer_id;

@@ -30,9 +30,9 @@ public class CashWithdrawalPanel extends JPanel {
             new LineBorder(new Color(144, 238, 144), 3, true), // Softer green border, rounded
             new EmptyBorder(40, 60, 40, 60) // Generous internal padding
         ));
-        inputContainerPanel.setPreferredSize(new Dimension(550, 250)); // Adjusted size
+        inputContainerPanel.setPreferredSize(new Dimension(550, 200)); // Adjusted size
         inputContainerPanel.setMaximumSize(new Dimension(550, 250));
-        inputContainerPanel.setMinimumSize(new Dimension(450, 200));
+        inputContainerPanel.setMinimumSize(new Dimension(750, 200));
 
         // Wrapper panel to visually center the inputContainerPanel within the BorderLayout.CENTER
         JPanel centerWrapperPanel = new JPanel(new GridBagLayout());
@@ -46,7 +46,7 @@ public class CashWithdrawalPanel extends JPanel {
 
         // --- Amount Field ---
         gbc.gridx = 0; gbc.gridy = 0;
-        JLabel amountLabel = new JLabel("Enter Amount to Withdraw:");
+        JLabel amountLabel = new JLabel("Enter Amount");
         amountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         amountLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(amountLabel, gbc);
@@ -55,10 +55,10 @@ public class CashWithdrawalPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST; // Text field aligns left
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill horizontally
         gbc.weightx = 1.0; // Give all extra horizontal space to this column
-        JTextField amountField = new JTextField(15);
-        amountField.setFont(new Font("Consolas", Font.PLAIN, 20)); // Consistent font size for input
-        amountField.setForeground(Color.BLACK); // Ensure text color is black
-        amountField.setPreferredSize(new Dimension(amountField.getPreferredSize().width, 40)); // Fixed height
+        JTextField amountField = new JTextField();
+        amountField.setFont(new Font("Segoe UI", Font.PLAIN, 20)); // Consistent font size for input
+        amountField.setForeground(new Color(80, 80, 80)); // Ensure text color is black
+        amountField.setPreferredSize(new Dimension(amountField.getPreferredSize().width, 30)); // Fixed height
         amountField.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(180, 180, 180), 1),
             new EmptyBorder(5, 10, 5, 10)
@@ -78,7 +78,7 @@ public class CashWithdrawalPanel extends JPanel {
         inputContainerPanel.add(withdrawButton, gbc);
 
         // --- Back Button ---
-        JButton backButton = createStyledButton("Back to ATM Menu", new Color(96, 125, 139)); // Gray for internal back
+        JButton backButton = createStyledButton("Back", new Color(96, 125, 139)); // Gray for internal back
         backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
 
         JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25)); // More vertical space below
@@ -121,7 +121,7 @@ public class CashWithdrawalPanel extends JPanel {
      */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(220, 55)); // Consistent button size
+        button.setPreferredSize(new Dimension(220, 40)); // Consistent button size
         button.setFont(new Font("Segoe UI", Font.BOLD, 19));
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);

@@ -66,7 +66,7 @@ public class BalanceInquiryPanel extends JPanel {
         balanceDisplayContainer.add(balanceValueLabel, gbc);
 
         // --- Back Button ---
-        JButton backButton = createStyledButton("Back to ATM Menu", new Color(96, 125, 139));
+        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
         backButton.addActionListener(e -> {
             if (loadingTimer != null && loadingTimer.isRunning()) {
                 loadingTimer.stop();

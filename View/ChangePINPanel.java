@@ -130,7 +130,7 @@ public class ChangePINPanel extends JPanel {
         inputContainerPanel.add(changePinButton, gbc);
 
         // --- Back Button ---
-        JButton backButton = createStyledButton("Back to ATM Menu", new Color(96, 125, 139));
+        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
         backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
 
         JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25)); // More vertical space below

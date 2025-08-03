@@ -78,7 +78,7 @@ public class CashWithdrawalPanel extends JPanel {
         inputContainerPanel.add(withdrawButton, gbc);
 
         // --- Back Button ---
-        JButton backButton = createStyledButton("Back to ATM Menu", new Color(96, 125, 139)); // Gray for internal back
+        JButton backButton = createStyledButton("Back", new Color(96, 125, 139)); // Gray for internal back
         backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
 
         JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25)); // More vertical space below

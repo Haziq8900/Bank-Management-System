@@ -2,11 +2,6 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-// Removed unused imports from your provided code to keep it clean:
-// import javax.swing.border.EmptyBorder;
-// import javax.swing.plaf.basic.BasicButtonUI;
-// import java.awt.event.MouseAdapter;
-// import java.awt.event.MouseEvent;
 
 public class ATMMainMenuPanel extends JPanel {
 
@@ -33,7 +28,10 @@ public class ATMMainMenuPanel extends JPanel {
         // --- Add Action Listeners to Buttons ---
         cashWithdrawalButton.addActionListener(e -> parentATMPanel.showATMSubPanel("CashWithdrawal"));
         balanceInquiryButton.addActionListener(e -> parentATMPanel.showATMSubPanel("BalanceInquiry"));
-        changePINButton.addActionListener(e -> parentATMPanel.showATMSubPanel("ChangePIN"));
+        changePINButton.addActionListener(e -> {
+            parentATMPanel.showATMSubPanel("ChangePIN");
+            parentATMPanel.setMainFrameHeaderVisibility(false);
+        });
         miniStatementButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Mini Statement function coming soon!", "ATM Service", JOptionPane.INFORMATION_MESSAGE));
         // Removed action listeners for deposit, fund transfer, bill payment
 

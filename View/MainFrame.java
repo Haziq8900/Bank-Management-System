@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 public class MainFrame extends JFrame {
 
     private JPanel mainContentPanel;
+    private JPanel headerPanel;
     private CardLayout cardLayout;
     private JLabel headerTitleLabel;
 
@@ -21,11 +22,11 @@ public class MainFrame extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 750);
-        setMinimumSize(new Dimension(900, 700));
+        setMinimumSize(new Dimension(900, 750));
         setLocationRelativeTo(null);
 
         // --- Header Panel (for title/branding) ---
-        JPanel headerPanel = new JPanel();
+        headerPanel = new JPanel();
         headerPanel.setBackground(new Color(25, 118, 210)); // Professional blue
         headerPanel.setLayout(new BorderLayout());
         headerPanel.setBorder(new EmptyBorder(25, 0, 15, 0));
@@ -49,7 +50,7 @@ public class MainFrame extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(30, 30, 30, 30);
 
-        JLabel welcomeMessage = new JLabel("Welcome! Please select a service:", SwingConstants.CENTER);
+        JLabel welcomeMessage = new JLabel("Welcome! Please select a service", SwingConstants.CENTER);
         welcomeMessage.setFont(new Font("Segoe UI", Font.BOLD, 30));
         welcomeMessage.setForeground(new Color(50, 50, 50));
         gbc.gridx = 0;
@@ -145,4 +146,16 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainContentPanel, "ServiceSelection");
         headerTitleLabel.setText("Haziq Bank Limited"); // Reset header title
     }
+
+    /**
+     * Controls the visibility of the main header panel.
+     * @param visible true to show the header, false to hide it.
+     */
+    public void setHeaderPanelVisibility(boolean visible) {
+        headerPanel.setVisible(visible);
+        // If you need to re-validate or repaint after changing visibility, add:
+        // revalidate();
+        // repaint();
+    }
+
 }

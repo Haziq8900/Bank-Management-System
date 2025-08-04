@@ -44,6 +44,5 @@ public class ATMMainMenuPanel extends JPanel {
         gbc.gridx = 1; gbc.gridy = 1; add(miniStatementButton, gbc);
         // Removed rows for removed buttons. The layout now fits 2x2.
     }
-
     // MAKE SURE there is NO createStyledButton or createATMMenuButton method here - these should be in ATMPanel
-}
+}  

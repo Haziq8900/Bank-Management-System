@@ -28,11 +28,11 @@ public class ChangePINPanel extends JPanel {
         inputContainerPanel.setBackground(new Color(255, 255, 255)); // White background for the input area
         inputContainerPanel.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(255, 179, 102), 3, true), // Softer orange border, rounded
-            new EmptyBorder(40, 60, 40, 60) // Generous internal padding
+            new EmptyBorder(10, 60, 10, 60) // Generous internal padding
         ));
         inputContainerPanel.setPreferredSize(new Dimension(600, 320)); // Adjusted size for three fields
         inputContainerPanel.setMaximumSize(new Dimension(600, 320));
-        inputContainerPanel.setMinimumSize(new Dimension(500, 270));
+        inputContainerPanel.setMinimumSize(new Dimension(500, 320));
 
         // Wrapper panel to visually center the inputContainerPanel within the BorderLayout.CENTER
         JPanel centerWrapperPanel = new JPanel(new GridBagLayout());
@@ -46,7 +46,7 @@ public class ChangePINPanel extends JPanel {
 
         // --- Current PIN Field ---
         gbc.gridx = 0; gbc.gridy = 0;
-        JLabel currentPinLabel = new JLabel("Current PIN:");
+        JLabel currentPinLabel = new JLabel("Current PIN");
         currentPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         currentPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(currentPinLabel, gbc);
@@ -72,7 +72,7 @@ public class ChangePINPanel extends JPanel {
 
         // --- New PIN Field ---
         gbc.gridx = 0; gbc.gridy = 1;
-        JLabel newPinLabel = new JLabel("New PIN:");
+        JLabel newPinLabel = new JLabel("New PIN");
         newPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         newPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(newPinLabel, gbc);
@@ -98,7 +98,7 @@ public class ChangePINPanel extends JPanel {
 
         // --- Confirm New PIN Field ---
         gbc.gridx = 0; gbc.gridy = 2;
-        JLabel confirmPinLabel = new JLabel("Confirm New PIN:");
+        JLabel confirmPinLabel = new JLabel("Confirm New PIN");
         confirmPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         confirmPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(confirmPinLabel, gbc);
@@ -125,7 +125,7 @@ public class ChangePINPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 3;
         gbc.gridwidth = 2; // Span across both columns
         gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
-        gbc.insets = new Insets(30, 10, 10, 10); // More top padding for the button
+        gbc.insets = new Insets(20, 10, 10, 10); // More top padding for the button
         JButton changePinButton = createStyledButton("Change PIN", new Color(220, 120, 20)); // Themed button
         inputContainerPanel.add(changePinButton, gbc);
 
@@ -133,7 +133,7 @@ public class ChangePINPanel extends JPanel {
         JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
         backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
 
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25)); // More vertical space below
+        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15)); // More vertical space below
         bottomButtonPanel.setBackground(getBackground());
         bottomButtonPanel.add(backButton);
         add(bottomButtonPanel, BorderLayout.SOUTH);
@@ -181,7 +181,7 @@ public class ChangePINPanel extends JPanel {
      */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(220, 55)); // Consistent button size
+        button.setPreferredSize(new Dimension(220, 40)); // Consistent button size
         button.setFont(new Font("Segoe UI", Font.BOLD, 19));
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);

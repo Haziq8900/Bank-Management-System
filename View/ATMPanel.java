@@ -101,4 +101,12 @@ public class ATMPanel extends JPanel {
     public void showATMMainMenu() {
         cardLayout.show(mainContentPanel, "ATMMainMenu");
     }
+    /**
+     * Method to control the visibility of the MainFrame's header panel.
+     * This acts as a bridge from ATMMainMenuPanel to MainFrame.
+     * @param visible true to show, false to hide.
+     */
+    public void setMainFrameHeaderVisibility(boolean visible) {
+        parentMainFrame.setHeaderPanelVisibility(visible);
+    }
 }

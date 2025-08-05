@@ -71,7 +71,10 @@ public class BankPanel extends JPanel {
         depositButton.addActionListener(e -> showBankSubPanel("Deposit"));
         fundTransferButton.addActionListener(e -> showBankSubPanel("FundTransfer"));
         billPaymentButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Bill Payment function coming soon!", "Bank Service", JOptionPane.INFORMATION_MESSAGE));
-        openAccountButton.addActionListener(e -> showBankSubPanel("OpenAccount"));
+        openAccountButton.addActionListener(e -> {
+            showBankSubPanel("OpenAccount");
+            parentMainFrame.setHeaderPanelVisibility(false);
+        });
         backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
 
         // --- Add Buttons to Panel ---

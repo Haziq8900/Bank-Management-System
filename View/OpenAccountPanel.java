@@ -16,12 +16,6 @@ public class OpenAccountPanel extends JPanel {
         setLayout(new BorderLayout(0, 30));
         setBackground(new Color(230, 240, 250)); // Consistent light bluish background
 
-        // --- Title Label ---
-        JLabel titleLabel = new JLabel("Open New Account", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 38));
-        titleLabel.setForeground(new Color(39, 174, 96)); // Green color for Open Account theme
-        titleLabel.setBorder(new EmptyBorder(25, 0, 15, 0));
-        add(titleLabel, BorderLayout.NORTH);
 
         // --- Input Area ---
         JPanel inputContainerPanel = new JPanel(new GridBagLayout());
@@ -47,7 +41,7 @@ public class OpenAccountPanel extends JPanel {
 
         // --- Account Type ---
         gbc.gridx = 0; gbc.gridy = 0;
-        JLabel accountTypeLabel = new JLabel("Account Type:");
+        JLabel accountTypeLabel = new JLabel("Account Type");
         accountTypeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         accountTypeLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(accountTypeLabel, gbc);
@@ -72,7 +66,7 @@ public class OpenAccountPanel extends JPanel {
 
         // --- Customer Details ---
         gbc.gridx = 0; gbc.gridy = 1;
-        JLabel nameLabel = new JLabel("Full Name:");
+        JLabel nameLabel = new JLabel("Full Name");
         nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         nameLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(nameLabel, gbc);
@@ -102,7 +96,7 @@ public class OpenAccountPanel extends JPanel {
         inputContainerPanel.add(phoneField, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        JLabel addressLabel = new JLabel("Address:");
+        JLabel addressLabel = new JLabel("Address");
         addressLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         addressLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(addressLabel, gbc);
@@ -183,10 +177,7 @@ public class OpenAccountPanel extends JPanel {
      */
     private JTextField createStyledTextField() {
         JTextField field = new JTextField(35); // Increased to 35 characters
-        field.setFont(new Font("Consolas", Font.PLAIN, 20));
         field.setForeground(Color.BLACK);
-        field.setPreferredSize(new Dimension(450, 50)); // Much larger width and height
-        field.setMinimumSize(new Dimension(400, 45)); // Set minimum size
         field.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(180, 180, 180), 1),
             new EmptyBorder(10, 15, 10, 15) // Increased padding

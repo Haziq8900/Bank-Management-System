@@ -28,19 +28,19 @@ public class BankPanel extends JPanel {
         JPanel bankMainMenuPanel = createBankMainMenuPanel();
         mainContentPanel.add(bankMainMenuPanel, "BankMainMenu");
 
-        // --- Add Bank Service Sub-Panels (e.g., Deposit, Fund Transfer, Open Account) ---
+        // --- Add Bank Service Sub-Panels (e.g., Deposit, Fund Transfer, Open Account, Close Account) ---
         DepositPanel depositPanel = new DepositPanel(this); // Pass this BankPanel
         mainContentPanel.add(depositPanel, "Deposit");
 
         FundTransferPanel fundTransferPanel = new FundTransferPanel(this); // Pass this BankPanel
         mainContentPanel.add(fundTransferPanel, "FundTransfer");
 
-        // Placeholder for Bill Payment Panel (if you create it)
-        // BillPaymentPanel billPaymentPanel = new BillPaymentPanel(this);
-        // mainContentPanel.add(billPaymentPanel, "BillPayment");
-
         OpenAccountPanel openAccountPanel = new OpenAccountPanel(this); // New Open Account Panel
         mainContentPanel.add(openAccountPanel, "OpenAccount");
+
+        // Instantiate and add the CloseAccountPanel
+        CloseAccountPanel closeAccountPanel = new CloseAccountPanel(this); // New Close Account Panel
+        mainContentPanel.add(closeAccountPanel, "CloseAccount");
 
         // Show the initial bank main menu
         showBankMainMenu();
@@ -62,23 +62,25 @@ public class BankPanel extends JPanel {
         // --- Bank Service Buttons ---
         JButton depositButton = createBankMenuButton("Deposit Funds", new Color(155, 89, 182)); // Purple
         JButton fundTransferButton = createBankMenuButton("Fund Transfer", new Color(230, 126, 34)); // Orange
-        JButton billPaymentButton = createBankMenuButton("Bill Payment", new Color(41, 128, 185)); // Dark Blue
         JButton openAccountButton = createBankMenuButton("Open New Account", new Color(39, 174, 96)); // Light Green
+        // Replaced Bill Payment with Close Account
+        JButton closeAccountButton = createBankMenuButton("Close Account", new Color(231, 76, 60)); // Red for Close Account
 
         JButton backButton = createBankMenuButton("Back to Main Menu", new Color(96, 125, 139)); // Gray
 
         // --- Add Action Listeners ---
         depositButton.addActionListener(e -> showBankSubPanel("Deposit"));
         fundTransferButton.addActionListener(e -> showBankSubPanel("FundTransfer"));
-        billPaymentButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Bill Payment function coming soon!", "Bank Service", JOptionPane.INFORMATION_MESSAGE));
         openAccountButton.addActionListener(e -> showBankSubPanel("OpenAccount"));
+        // Action listener for the new Close Account button
+        closeAccountButton.addActionListener(e -> showBankSubPanel("CloseAccount"));
         backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
 
         // --- Add Buttons to Panel ---
         gbc.gridx = 0; gbc.gridy = 0; panel.add(depositButton, gbc);
         gbc.gridx = 1; gbc.gridy = 0; panel.add(fundTransferButton, gbc);
-        gbc.gridx = 0; gbc.gridy = 1; panel.add(billPaymentButton, gbc);
-        gbc.gridx = 1; gbc.gridy = 1; panel.add(openAccountButton, gbc);
+        gbc.gridx = 0; gbc.gridy = 1; panel.add(openAccountButton, gbc);
+        gbc.gridx = 1; gbc.gridy = 1; panel.add(closeAccountButton, gbc); // Add the Close Account button here
 
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.gridwidth = 2; // Span across two columns
@@ -119,7 +121,7 @@ public class BankPanel extends JPanel {
 
     /**
      * Shows a specific sub-panel within the Bank services.
-     * @param panelName The name of the panel to show (e.g., "Deposit", "FundTransfer", "OpenAccount").
+     * @param panelName The name of the panel to show (e.g., "Deposit", "FundTransfer", "OpenAccount", "CloseAccount").
      */
     public void showBankSubPanel(String panelName) {
         cardLayout.show(mainContentPanel, panelName);

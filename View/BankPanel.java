@@ -63,25 +63,17 @@ public class BankPanel extends JPanel {
         JButton depositButton = createBankMenuButton("Deposit Funds", new Color(155, 89, 182)); // Purple
         JButton fundTransferButton = createBankMenuButton("Fund Transfer", new Color(230, 126, 34)); // Orange
         JButton openAccountButton = createBankMenuButton("Open New Account", new Color(39, 174, 96)); // Light Green
-        // Replaced Bill Payment with Close Account
         JButton closeAccountButton = createBankMenuButton("Close Account", new Color(231, 76, 60)); // Red for Close Account
 
         JButton backButton = createBankMenuButton("Back to Main Menu", new Color(96, 125, 139)); // Gray
 
         // --- Add Action Listeners ---
+        // These lines have been added to fix the issue.
         depositButton.addActionListener(e -> showBankSubPanel("Deposit"));
         fundTransferButton.addActionListener(e -> showBankSubPanel("FundTransfer"));
-<<<<<<< HEAD
+
         openAccountButton.addActionListener(e -> showBankSubPanel("OpenAccount"));
-        // Action listener for the new Close Account button
         closeAccountButton.addActionListener(e -> showBankSubPanel("CloseAccount"));
-=======
-        billPaymentButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Bill Payment function coming soon!", "Bank Service", JOptionPane.INFORMATION_MESSAGE));
-        openAccountButton.addActionListener(e -> {
-            showBankSubPanel("OpenAccount");
-            parentMainFrame.setHeaderPanelVisibility(false);
-        });
->>>>>>> d7e395c21899dc798f7fb1078165368403704dd5
         backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
 
         // --- Add Buttons to Panel ---

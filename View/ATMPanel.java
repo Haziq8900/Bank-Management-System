@@ -39,6 +39,10 @@ public class ATMPanel extends JPanel {
         ChangePINPanel changePINPanel = new ChangePINPanel(this);
         mainContentPanel.add(changePINPanel, "ChangePIN");
 
+        // --- NEW: Add the MiniStatementPanel to the CardLayout ---
+        MiniStatementPanel miniStatementPanel = new MiniStatementPanel(this);
+        mainContentPanel.add(miniStatementPanel, "MiniStatement");
+        
         // REMOVED:
         // DepositPanel depositPanel = new DepositPanel(this); // This line and its addition are removed
         // FundTransferPanel fundTransferPanel = new FundTransferPanel(this); // This line and its addition are removed

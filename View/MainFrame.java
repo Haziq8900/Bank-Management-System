@@ -68,19 +68,23 @@ public class MainFrame extends JFrame {
         serviceSelectionPanel.add(bankButton, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 1; // Corrected gridy for atmButton
+        gbc.gridy = 1;
         atmButton = createStyledButton("ATM Services", new Color(255, 152, 0)); // Orange for ATM
         serviceSelectionPanel.add(atmButton, gbc);
 
         mainContentPanel.add(serviceSelectionPanel, "ServiceSelection");
 
-        // --- 2. ATM Panel ---
+        // --- 2. ATM Login Panel (NEW) ---
+        JPanel atmLoginPanel = createATMLoginPanel();
+        mainContentPanel.add(atmLoginPanel, "ATMLogin");
+
+        // --- 3. ATM Panel ---
         ATMPanel atmPanel = new ATMPanel(this);
         mainContentPanel.add(atmPanel, "ATMView");
 
-        // --- 3. Bank Panel (NEW) ---
-        BankPanel bankPanel = new BankPanel(this); // Initialize BankPanel
-        mainContentPanel.add(bankPanel, "BankView"); // Add it to CardLayout
+        // --- 4. Bank Panel (NEW) ---
+        BankPanel bankPanel = new BankPanel(this);
+        mainContentPanel.add(bankPanel, "BankView");
 
         add(mainContentPanel, BorderLayout.CENTER);
 
@@ -96,16 +100,106 @@ public class MainFrame extends JFrame {
 
         // --- Action Listeners for Panel Transitions ---
         atmButton.addActionListener(e -> {
-            cardLayout.show(mainContentPanel, "ATMView");
-            headerTitleLabel.setText("ATM Services");
+            cardLayout.show(mainContentPanel, "ATMLogin");
+            headerTitleLabel.setText("ATM Login");
         });
 
         bankButton.addActionListener(e -> {
-            cardLayout.show(mainContentPanel, "BankView"); // Show the Bank panel
+            cardLayout.show(mainContentPanel, "BankView");
             headerTitleLabel.setText("Bank Services");
         });
 
         setVisible(true);
+    }
+
+    /**
+     * Helper method to create the new ATM login panel.
+     */
+    private JPanel createATMLoginPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(245, 245, 245));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        JLabel titleLabel = new JLabel("Please enter your ATM details", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        titleLabel.setForeground(new Color(50, 50, 50));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(titleLabel, gbc);
+
+        JLabel accountLabel = new JLabel("Account Number:", SwingConstants.RIGHT);
+        accountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(accountLabel, gbc);
+
+        JTextField accountField = new JTextField(16);
+        accountField.setPreferredSize(new Dimension(250, 35));
+        accountField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(accountField, gbc);
+
+        JLabel pinLabel = new JLabel("PIN:", SwingConstants.RIGHT);
+        pinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(pinLabel, gbc);
+
+        JPasswordField pinField = new JPasswordField(4);
+        pinField.setPreferredSize(new Dimension(250, 35));
+        pinField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(pinField, gbc);
+
+        JButton loginButton = createStyledButton("Login", new Color(255, 152, 0));
+        loginButton.setPreferredSize(new Dimension(120, 50));
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(30, 10, 10, 10);
+        panel.add(loginButton, gbc);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        backButton.setForeground(new Color(25, 118, 210));
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gbc.gridy = 4;
+        gbc.insets = new Insets(0, 10, 10, 10);
+        panel.add(backButton, gbc);
+
+        // Action listener for the Login button
+        loginButton.addActionListener(e -> {
+            String accountNumber = accountField.getText();
+            String pin = new String(pinField.getPassword());
+
+            if (accountNumber.length() == 16 && pin.length() == 4) {
+                // Assuming validation passes for now
+                cardLayout.show(mainContentPanel, "ATMView");
+                headerTitleLabel.setText("ATM Services");
+                // Clear the fields after successful login
+                accountField.setText("");
+                pinField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid credentials. Account number must be 16 digits and PIN 4 digits.",
+                        "Login Failed",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Action listener for the Back button
+        backButton.addActionListener(e -> showServiceSelectionPanel());
+
+        return panel;
     }
 
     /**
@@ -140,7 +234,6 @@ public class MainFrame extends JFrame {
 
     /**
      * Method to navigate back to the service selection panel.
-     * This can be called from other panels (like ATMPanel, BankPanel) when a "Back" button is pressed.
      */
     public void showServiceSelectionPanel() {
         cardLayout.show(mainContentPanel, "ServiceSelection");
@@ -153,9 +246,5 @@ public class MainFrame extends JFrame {
      */
     public void setHeaderPanelVisibility(boolean visible) {
         headerPanel.setVisible(visible);
-        // If you need to re-validate or repaint after changing visibility, add:
-        // revalidate();
-        // repaint();
     }
-
 }

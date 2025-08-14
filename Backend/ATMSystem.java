@@ -215,4 +215,96 @@ public class ATMSystem {
         }
     }
 
+    public boolean balanceInquiry(long accountNumber) {
+        if (accountNumber <= 0) {
+            JOptionPane.showMessageDialog(null,
+                "Invalid account number.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String sql = "SELECT balance FROM accounts WHERE account_number = ?";
+    
+        try (Connection conn = getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql)) {
+        
+            psmt.setLong(1, accountNumber);
+            ResultSet rs = psmt.executeQuery();
+
+            if (rs.next()) {
+                double balance = rs.getDouble("balance");
+                JOptionPane.showMessageDialog(null,
+                    "Your current balance is: " + balance,
+                    "Balance Inquiry", JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null,
+                    "Account not found.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                "Database Error: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    public boolean miniStatement(long accountNumber) {
+        if (accountNumber <= 0) {
+            JOptionPane.showMessageDialog(null,
+                "Invalid account number.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String sql ="SELECT transaction_date, type, amount " +
+                    "FROM transactions " +
+                    "WHERE account_number = ? " +
+                    "ORDER BY transaction_date DESC " +
+                    "LIMIT 5";
+
+        try (Connection conn = getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql)) {
+
+            psmt.setLong(1, accountNumber);
+            ResultSet rs = psmt.executeQuery();
+
+            StringBuilder statement = new StringBuilder();
+            statement.append("Last 5 Transactions:\n");
+            statement.append("----------------------------------------\n");
+            statement.append("Date\t\tType\tAmount\n");
+
+            boolean hasTransactions = false;
+            while (rs.next()) {
+                hasTransactions = true;
+                String date = rs.getString("transaction_date");
+                String type = rs.getString("type");
+                double amount = rs.getDouble("amount");
+
+                statement.append(String.format("%s\t%s\t%.2f\n",
+                        date, type, amount));
+            }
+
+            if (hasTransactions) {
+                JOptionPane.showMessageDialog(null,
+                    statement.toString(),
+                    "Mini Statement", JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null,
+                    "No transactions found for this account.",
+                    "Mini Statement", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                "Database Error: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 }

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Transaction {
     private int transaction_id;
-    private int account_id;
+    private int account_number;
     private String type;
     private double amount;
     private Timestamp transaction_date;
@@ -15,8 +15,8 @@ public class Transaction {
         return transaction_id;
     }
 
-    public int getAccount_id(){
-        return account_id;
+    public int getAccountNumber(){
+        return account_number;
     }
 
     public String getType(){
@@ -37,8 +37,8 @@ public class Transaction {
         this.transaction_id = transaction_id;
     }
 
-    public void setAccount_id(int account_id){
-        this.account_id = account_id;
+    public void setAccountNumber(int account_number){
+        this.account_number = account_number;
     }
 
     public void setType(String type){

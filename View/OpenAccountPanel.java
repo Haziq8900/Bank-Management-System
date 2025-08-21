@@ -1,11 +1,15 @@
 package View;
 
+import Backend.Account;
+import Model.AccountDatabase;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class OpenAccountPanel extends JPanel {
 
@@ -136,7 +140,8 @@ public class OpenAccountPanel extends JPanel {
 
         // --- Action Listener for Submit Button ---
         submitButton.addActionListener(e -> {
-            String accType = savingsRadio.isSelected() ? "Savings" : "Current";
+            byte accType = 0;
+            if (savingsRadio.getText().equals("Current")) accType = 1;
             String name = nameField.getText().trim();
             String cnic = cnicField.getText().trim();
             String phone = phoneField.getText().trim();
@@ -156,10 +161,17 @@ public class OpenAccountPanel extends JPanel {
                 return;
             }
 
-            // In a real application, you would create an account object and save it
-            String message = String.format("Account Type: %s%nName: %s%nCNIC: %s%nPhone: %s%nAddress: %s%n%nAccount opening request submitted!",
-                                            accType, name, cnic, phone, address);
-            JOptionPane.showMessageDialog(this, message, "Account Opening Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                AccountDatabase account = new AccountDatabase();
+                account.createAccount(new Account(name, cnic, phone, accType, address));
+                String message = String.format("Account Type: %s%nName: %s%nCNIC: %s%nPhone: %s%nAddress: %s%n%nAccount opening request submitted!",
+                        accType, name, cnic, phone, address);
+                JOptionPane.showMessageDialog(this, message, "Account Opening Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (SQLException exception) {
+                JOptionPane.showMessageDialog(this, exception, "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
 
             // Clear fields after submission
             nameField.setText("");

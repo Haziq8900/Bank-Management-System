@@ -20,7 +20,7 @@ public class AccountDatabase {
             statement.setString(2, account.getName());
             statement.setString(3, account.getCnic());
             statement.setString(4, account.getPhone());
-            statement.setString(5, account.getAccount_type());
+            statement.setInt(5, account.getAccount_type());
             statement.setDouble(6, account.getBalance());
             statement.executeUpdate();
         } catch (SQLException e) {

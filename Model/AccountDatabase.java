@@ -28,4 +28,19 @@ public class AccountDatabase {
         }
     }
 
+    public void depositFund(Account account) throws SQLException{
+        String query = "UPDATE accounts SET balance = balance + ? WHERE account_number = ?";
+        try (java.sql.PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDouble(1, account.getBalance());
+            statement.setString(2, account.getAccount_number());
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Account not found with account_number: " + account.getAccount_number());
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error depositing funds: " + e.getMessage());
+        }
+    }
+
 }

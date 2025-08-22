@@ -1,5 +1,7 @@
 package View;
 
+import Backend.Account;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -116,13 +118,14 @@ public class DepositPanel extends JPanel {
 
             try {
                 double amount = Double.parseDouble(amountText);
-                if (amount <= 0) {
+                if (amount < 1) {
                     JOptionPane.showMessageDialog(this, "Please enter a positive amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
+                Account account = new Account(accountNumber);
+                account.deposit(amount);
                 JOptionPane.showMessageDialog(this,
-                        String.format("Depositing $%,.2f into account %s.%nTransaction is being processed.", amount, accountNumber),
+                        String.format("Depositing %,.2f pkr into account %s.%nTransaction is being processed.", amount, accountNumber),
                         "Deposit Successful", JOptionPane.INFORMATION_MESSAGE);
                 
                 accountField.setText("");
@@ -130,6 +133,10 @@ public class DepositPanel extends JPanel {
                 // parentBankPanel.showBankMainMenu(); // Optionally go back
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid amount. Please enter numbers only (e.g., 100.00).", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (Exception ex){
+                JOptionPane.showMessageDialog(this, ex, "Error", JOptionPane.ERROR_MESSAGE);
+
             }
         });
     }

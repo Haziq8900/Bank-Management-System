@@ -1,5 +1,8 @@
 package Backend;
 
+import Model.AccountDatabase;
+
+import java.sql.SQLException;
 import java.util.Random;
 
 public class Account {
@@ -20,8 +23,10 @@ public class Account {
         this.setAccount_number();
     }
 
+    public Account(String account_number){
+        this.account_number = account_number;
+    }
     // Getter Methods
-
 
     public String getAddress() {
         return address;
@@ -84,4 +89,10 @@ public class Account {
         this.balance = balance;
     }
 
+
+    public void deposit(double amount) throws SQLException {
+        this.balance = amount;
+        AccountDatabase accountDatabase = new AccountDatabase();
+        accountDatabase.depositFund(this);
+    }
 }

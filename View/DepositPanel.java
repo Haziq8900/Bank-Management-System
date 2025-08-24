@@ -98,15 +98,6 @@ public class DepositPanel extends JPanel {
         JButton depositButton = createStyledButton("Deposit", new Color(155, 89, 182));
         inputContainerPanel.add(depositButton, gbc);
 
-        // Changed: parentATMPanel.showATMMainMenu()
-        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
-        backButton.addActionListener(e -> parentBankPanel.showBankMainMenu()); // Call BankPanel's method
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
-
         depositButton.addActionListener(e -> {
             String accountNumber = accountField.getText().trim();
             String amountText = amountField.getText().trim();

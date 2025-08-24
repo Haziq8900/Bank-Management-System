@@ -97,16 +97,6 @@ public class CloseAccountPanel extends JPanel {
         });
         controlsPanel.add(closeAccountButton);
 
-        JButton backButton = new JButton("Back to Bank Menu");
-        styleButton(backButton, new Color(149, 165, 166)); // Gray for back
-        backButton.addActionListener(e -> {
-            System.out.println("CloseAccountPanel: 'Back' button clicked. Returning to BankMainMenu."); // Debug
-            parentBankPanel.showBankMainMenu();
-            clearFields(); // Clear fields when going back
-            showMessage("", getBackground()); // Clear message
-        });
-        controlsPanel.add(backButton);
-
         add(controlsPanel, BorderLayout.SOUTH);
     }
 

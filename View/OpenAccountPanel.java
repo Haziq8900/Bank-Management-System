@@ -129,15 +129,6 @@ public class OpenAccountPanel extends JPanel {
         JButton submitButton = createStyledButton("Open Account", new Color(39, 174, 96));
         inputContainerPanel.add(submitButton, gbc);
 
-        // --- Back Button ---
-        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
-        backButton.addActionListener(e -> parentBankPanel.showBankMainMenu());
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
-
         // --- Action Listener for Submit Button ---
         submitButton.addActionListener(e -> {
             byte accType = 0;

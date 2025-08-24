@@ -120,15 +120,6 @@ public class FundTransferPanel extends JPanel {
         JButton transferButton = createStyledButton("Transfer Funds", new Color(230, 126, 34));
         inputContainerPanel.add(transferButton, gbc);
 
-        // Changed: parentATMPanel.showATMMainMenu()
-        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
-        backButton.addActionListener(e -> parentBankPanel.showBankMainMenu()); // Call BankPanel's method
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
-
         transferButton.addActionListener(e -> {
             String fromAccount = fromAccountField.getText().trim();
             String toAccount = toAccountField.getText().trim();

@@ -1,11 +1,14 @@
 package View;
 
+import Backend.Account;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class FundTransferPanel extends JPanel {
     // Changed: private ATMPanel parentATMPanel;
@@ -130,12 +133,20 @@ public class FundTransferPanel extends JPanel {
                 return;
             }
 
+            if(fromAccount.equals(toAccount)){
+                JOptionPane.showMessageDialog(this, "From and to accounts cannot be the same.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try {
                 double amount = Double.parseDouble(amountText);
-                if (amount <= 0) {
+                if (amount < 1) {
                     JOptionPane.showMessageDialog(this, "Please enter a positive amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                Account fromAccountObj = new Account(fromAccount);
+                Account toAccountObj = new Account(toAccount);
+                fromAccountObj.fundTransfer(toAccountObj, amount);
 
                 JOptionPane.showMessageDialog(this,
                         String.format("Transferring $%,.2f from account %s to account %s.%nTransaction is being processed.", amount, fromAccount, toAccount),
@@ -146,6 +157,8 @@ public class FundTransferPanel extends JPanel {
                 amountField.setText("");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid amount. Please enter numbers only (e.g., 100.00).", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, ex, "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }

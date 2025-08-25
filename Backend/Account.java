@@ -95,4 +95,16 @@ public class Account {
         AccountDatabase accountDatabase = new AccountDatabase();
         accountDatabase.depositFund(this);
     }
+
+    public void fundTransfer(Account receiver, double amount) throws SQLException{
+        AccountDatabase accountDatabase = new AccountDatabase();
+        this.setBalance(accountDatabase.getBalance(this));
+        if (this.getBalance() >= amount) {
+            receiver.setBalance(amount);
+            accountDatabase.depositFund(receiver);
+            accountDatabase.deductBalance(this, amount);
+        } else {
+            throw new SQLException("Insufficient Funds");
+        }
+    }
 }

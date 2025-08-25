@@ -43,4 +43,29 @@ public class AccountDatabase {
         }
     }
 
+    public double getBalance(Account account) throws SQLException{
+        String query = "SELECT balance FROM accounts WHERE account_number = ?";
+        try (java.sql.PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, account.getAccount_number());
+            try (java.sql.ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getDouble(1);
+                }
+                return 0.0;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error getting balance: " + e.getMessage());
+        }
+    }
+
+    public boolean deductBalance(Account account, double amount) throws SQLException{
+        String query = "UPDATE accounts SET balance = balance - ? WHERE account_number = ?";
+        try (java.sql.PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDouble(1, amount);
+            statement.setString(2, account.getAccount_number());
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected != 0;
+        }
+    }
+
 }

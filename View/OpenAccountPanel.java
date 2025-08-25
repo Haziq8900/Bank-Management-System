@@ -25,12 +25,12 @@ public class OpenAccountPanel extends JPanel {
         JPanel inputContainerPanel = new JPanel(new GridBagLayout());
         inputContainerPanel.setBackground(new Color(255, 255, 255)); // White background
         inputContainerPanel.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(195, 250, 195), 3, true), // Softer green border, rounded
-            new EmptyBorder(30, 50, 30, 50) // Generous internal padding
+            new LineBorder(new Color(195, 250, 195), 2, true), // Softer green border, rounded
+            new EmptyBorder(20, 30, 20, 30) // Reduced internal padding
         ));
-        inputContainerPanel.setPreferredSize(new Dimension(850, 500));
-        inputContainerPanel.setMaximumSize(new Dimension(850, 500));
-        inputContainerPanel.setMinimumSize(new Dimension(750, 450));
+        inputContainerPanel.setPreferredSize(new Dimension(750, 480));
+        inputContainerPanel.setMaximumSize(new Dimension(800, 500));
+        inputContainerPanel.setMinimumSize(new Dimension(650, 400));
 
         JPanel centerWrapperPanel = new JPanel(new GridBagLayout());
         centerWrapperPanel.setBackground(getBackground());
@@ -38,7 +38,7 @@ public class OpenAccountPanel extends JPanel {
         add(centerWrapperPanel, BorderLayout.CENTER);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Spacing for input fields
+        gbc.insets = new Insets(6, 8, 6, 8); // Reduced spacing for input fields
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make components fill horizontally
         gbc.weightx = 1.0; // Give extra weight to horizontal expansion
@@ -46,7 +46,7 @@ public class OpenAccountPanel extends JPanel {
         // --- Account Type ---
         gbc.gridx = 0; gbc.gridy = 0;
         JLabel accountTypeLabel = new JLabel("Account Type");
-        accountTypeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        accountTypeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         accountTypeLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(accountTypeLabel, gbc);
 
@@ -57,11 +57,11 @@ public class OpenAccountPanel extends JPanel {
         accountTypeGroup.add(savingsRadio);
         accountTypeGroup.add(currentRadio);
         savingsRadio.setSelected(true); // Default selection
-        savingsRadio.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        currentRadio.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        savingsRadio.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        currentRadio.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         savingsRadio.setBackground(inputContainerPanel.getBackground());
         currentRadio.setBackground(inputContainerPanel.getBackground());
-        
+
         JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         radioPanel.setBackground(inputContainerPanel.getBackground());
         radioPanel.add(savingsRadio);
@@ -71,7 +71,7 @@ public class OpenAccountPanel extends JPanel {
         // --- Customer Details ---
         gbc.gridx = 0; gbc.gridy = 1;
         JLabel nameLabel = new JLabel("Full Name");
-        nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         nameLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(nameLabel, gbc);
 
@@ -81,7 +81,7 @@ public class OpenAccountPanel extends JPanel {
 
         gbc.gridx = 0; gbc.gridy = 2;
         JLabel cnicLabel = new JLabel("CNIC Number:");
-        cnicLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        cnicLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         cnicLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(cnicLabel, gbc);
 
@@ -91,7 +91,7 @@ public class OpenAccountPanel extends JPanel {
 
         gbc.gridx = 0; gbc.gridy = 3;
         JLabel phoneLabel = new JLabel("Phone Number:");
-        phoneLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        phoneLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         phoneLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(phoneLabel, gbc);
 
@@ -101,30 +101,86 @@ public class OpenAccountPanel extends JPanel {
 
         gbc.gridx = 0; gbc.gridy = 4;
         JLabel addressLabel = new JLabel("Address");
-        addressLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        addressLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         addressLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(addressLabel, gbc);
 
         gbc.gridx = 1; gbc.gridy = 4;
-        JTextArea addressArea = new JTextArea(4, 35); // Reduced rows and columns
-        addressArea.setFont(new Font("Consolas", Font.PLAIN, 18));
+        JTextArea addressArea = new JTextArea(3, 25); // Further reduced rows and columns
+        addressArea.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Reduced font size
         addressArea.setForeground(Color.BLACK);
         addressArea.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(180, 180, 180), 1),
-            new EmptyBorder(8, 12, 8, 12) // Reduced padding
+            new EmptyBorder(6, 10, 6, 10) // Further reduced padding
         ));
         addressArea.setLineWrap(true);
         addressArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(addressArea);
-        scrollPane.setPreferredSize(new Dimension(400, 90)); // Reduced width and height
-        scrollPane.setMinimumSize(new Dimension(350, 80)); // Reduced minimum size
+        scrollPane.setPreferredSize(new Dimension(350, 70)); // Further reduced width and height
+        scrollPane.setMinimumSize(new Dimension(300, 60)); // Further reduced minimum size
         inputContainerPanel.add(scrollPane, gbc);
 
-        // --- Submit Button ---
+        // --- ATM Card Option ---
         gbc.gridx = 0; gbc.gridy = 5;
+        JLabel atmCardLabel = new JLabel("Issue ATM Card");
+        atmCardLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        atmCardLabel.setForeground(new Color(80, 80, 80));
+        inputContainerPanel.add(atmCardLabel, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 5;
+        JRadioButton atmYesRadio = new JRadioButton("Yes");
+        JRadioButton atmNoRadio = new JRadioButton("No");
+        ButtonGroup atmCardGroup = new ButtonGroup();
+        atmCardGroup.add(atmYesRadio);
+        atmCardGroup.add(atmNoRadio);
+        atmNoRadio.setSelected(true); // Default selection is No
+        atmYesRadio.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        atmNoRadio.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        atmYesRadio.setBackground(inputContainerPanel.getBackground());
+        atmNoRadio.setBackground(inputContainerPanel.getBackground());
+
+        JPanel atmRadioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        atmRadioPanel.setBackground(inputContainerPanel.getBackground());
+        atmRadioPanel.add(atmYesRadio);
+        atmRadioPanel.add(atmNoRadio);
+        inputContainerPanel.add(atmRadioPanel, gbc);
+
+        // --- PIN Field (initially hidden) ---
+        gbc.gridx = 0; gbc.gridy = 6;
+        JLabel pinLabel = new JLabel("4-Digit PIN");
+        pinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        pinLabel.setForeground(new Color(80, 80, 80));
+        pinLabel.setVisible(false); // Initially hidden
+        inputContainerPanel.add(pinLabel, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 6;
+        JPasswordField pinField = new JPasswordField(4);
+        pinField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        pinField.setForeground(Color.BLACK);
+        pinField.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(180, 180, 180), 1),
+            new EmptyBorder(8, 12, 8, 12)
+        ));
+        pinField.setVisible(false); // Initially hidden
+        inputContainerPanel.add(pinField, gbc);
+
+        // Add listeners to show/hide PIN field based on radio button selection
+        atmYesRadio.addActionListener(e -> {
+            pinLabel.setVisible(true);
+            pinField.setVisible(true);
+        });
+
+        atmNoRadio.addActionListener(e -> {
+            pinLabel.setVisible(false);
+            pinField.setVisible(false);
+            pinField.setText(""); // Clear PIN when hidden
+        });
+
+        // --- Submit Button ---
+        gbc.gridx = 0; gbc.gridy = 7;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(25, 10, 15, 10); // Reduced top padding for button
+        gbc.insets = new Insets(15, 8, 10, 8); // Further reduced padding for button
         gbc.fill = GridBagConstraints.NONE; // Don't fill for button
         JButton submitButton = createStyledButton("Open Account", new Color(39, 174, 96));
         inputContainerPanel.add(submitButton, gbc);
@@ -137,6 +193,8 @@ public class OpenAccountPanel extends JPanel {
             String cnic = cnicField.getText().trim();
             String phone = phoneField.getText().trim();
             String address = addressArea.getText().trim();
+            boolean issueATMCard = atmYesRadio.isSelected();
+            String pin = "";
 
             if (name.isEmpty() || cnic.isEmpty() || phone.isEmpty() || address.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required to open an account.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -152,16 +210,40 @@ public class OpenAccountPanel extends JPanel {
                 return;
             }
 
+            // Validate PIN if ATM card is selected
+            if (issueATMCard) {
+                pin = new String(pinField.getPassword()).trim();
+                if (pin.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "PIN is required when issuing an ATM card.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!pin.matches("\\d{4}")) {
+                    JOptionPane.showMessageDialog(this, "PIN should be exactly 4 digits (numbers only).", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
             try {
                 AccountDatabase account = new AccountDatabase();
+                // Note: You may need to update the Account constructor or add parameters to include ATM card and PIN
                 account.createAccount(new Account(name, cnic, phone, accType, address));
-                String message = String.format("Account Type: %s%nName: %s%nCNIC: %s%nPhone: %s%nAddress: %s%n%nAccount opening request submitted!",
-                        accType, name, cnic, phone, address);
-                JOptionPane.showMessageDialog(this, message, "Account Opening Confirmation", JOptionPane.INFORMATION_MESSAGE);
+
+                StringBuilder messageBuilder = new StringBuilder();
+                messageBuilder.append(String.format("Account Type: %s%nName: %s%nCNIC: %s%nPhone: %s%nAddress: %s%n", 
+                        accType == 0 ? "Savings" : "Current", name, cnic, phone, address));
+
+                if (issueATMCard) {
+                    messageBuilder.append(String.format("ATM Card: Yes%nPIN: %s%n", pin));
+                } else {
+                    messageBuilder.append("ATM Card: No\n");
+                }
+
+                messageBuilder.append("\nAccount opening request submitted!");
+
+                JOptionPane.showMessageDialog(this, messageBuilder.toString(), "Account Opening Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
             } catch (SQLException exception) {
                 JOptionPane.showMessageDialog(this, exception, "Error", JOptionPane.ERROR_MESSAGE);
-
             }
 
             // Clear fields after submission
@@ -169,7 +251,11 @@ public class OpenAccountPanel extends JPanel {
             cnicField.setText("");
             phoneField.setText("");
             addressArea.setText("");
+            pinField.setText("");
             savingsRadio.setSelected(true); // Reset to default
+            atmNoRadio.setSelected(true); // Reset ATM card option
+            pinLabel.setVisible(false); // Hide PIN field
+            pinField.setVisible(false);
 
             parentBankPanel.showBankMainMenu(); // Go back to Bank menu
         });
@@ -179,11 +265,12 @@ public class OpenAccountPanel extends JPanel {
      * Helper method to create consistently styled JTextFields.
      */
     private JTextField createStyledTextField() {
-        JTextField field = new JTextField(35); // Increased to 35 characters
+        JTextField field = new JTextField(25); // Reduced to 25 characters
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Reduced font size
         field.setForeground(Color.BLACK);
         field.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(new Color(180, 180, 180), 1),
-            new EmptyBorder(10, 15, 10, 15) // Increased padding
+            new EmptyBorder(8, 12, 8, 12) // Reduced padding
         ));
         return field;
     }
@@ -193,14 +280,14 @@ public class OpenAccountPanel extends JPanel {
      */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(180, 45)); // Reduced size
-        button.setFont(new Font("Segoe UI", Font.BOLD, 16)); // Reduced font size
+        button.setPreferredSize(new Dimension(160, 40)); // Further reduced size
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14)); // Further reduced font size
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(bgColor.darker(), 2),
-                BorderFactory.createEmptyBorder(8, 16, 8, 16) // Reduced padding
+                BorderFactory.createLineBorder(bgColor.darker(), 1), // Thinner border
+                BorderFactory.createEmptyBorder(6, 12, 6, 12) // Further reduced padding
         ));
         button.addMouseListener(new MouseAdapter() {
             @Override

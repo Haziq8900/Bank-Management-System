@@ -13,6 +13,7 @@ public class Account {
     private byte account_type;
     private double balance;
     private String address;
+    private String pin;
 
     public Account(String name, String cnic, String phone, byte account_type, String address) {
         this.address = address;
@@ -23,11 +24,23 @@ public class Account {
         this.setAccount_number();
     }
 
+    public Account(String name, String cnic, String phone, byte account_type, String address, String pin) {
+        this.address = address;
+        this.name = name;
+        this.cnic = cnic;
+        this.phone = phone;
+        this.account_type = account_type;
+        this.pin = pin;
+        this.setAccount_number();
+    }
     public Account(String account_number){
         this.account_number = account_number;
     }
     // Getter Methods
 
+    public String getPin() {
+        return pin;
+    }
     public String getAddress() {
         return address;
     }
@@ -59,6 +72,9 @@ public class Account {
 
     // Setter Methods
 
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
 
     public void setAddress(String address) {
         this.address = address;

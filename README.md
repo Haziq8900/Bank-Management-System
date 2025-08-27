@@ -8,6 +8,6 @@ name varchar(30) not null,
 cnic varchar(13) unique not null,
 phone varchar(11) unique not null,
 account_type smallint, balance double,
-pin varchar(1234)
+pin varchar(4)
 );
 ```

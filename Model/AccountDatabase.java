@@ -14,7 +14,11 @@ public class AccountDatabase {
 
 
     public void createAccount(Account account) throws SQLException {
-        String query = "insert into accounts (account_number, name, cnic, phone, account_type, balance) values (?, ?, ?, ?, ?, ?)";
+        String query = "";
+        if(account.getPin() == null || account.getPin().isEmpty()){
+          query = "insert into accounts (account_number, name, cnic, phone, account_type, balance) values (?, ?, ?, ?, ?, ?)";
+        }else
+            query = "insert into accounts (account_number, name, cnic, phone, account_type, balance, pin) values (?, ?, ?, ?, ?, ?, ?)";
         try (java.sql.PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, account.getAccount_number());
             statement.setString(2, account.getName());
@@ -22,6 +26,9 @@ public class AccountDatabase {
             statement.setString(4, account.getPhone());
             statement.setInt(5, account.getAccount_type());
             statement.setDouble(6, account.getBalance());
+            if (account.getPin() != null && !account.getPin().isEmpty()){
+                statement.setString(7, account.getPin());
+            }
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Error creating account: " + e.getMessage());

@@ -226,15 +226,17 @@ public class OpenAccountPanel extends JPanel {
             try {
                 AccountDatabase account = new AccountDatabase();
                 // Note: You may need to update the Account constructor or add parameters to include ATM card and PIN
-                account.createAccount(new Account(name, cnic, phone, accType, address));
+
 
                 StringBuilder messageBuilder = new StringBuilder();
                 messageBuilder.append(String.format("Account Type: %s%nName: %s%nCNIC: %s%nPhone: %s%nAddress: %s%n", 
                         accType == 0 ? "Savings" : "Current", name, cnic, phone, address));
 
                 if (issueATMCard) {
+                    account.createAccount(new Account(name, cnic, phone, accType, address, pin));
                     messageBuilder.append(String.format("ATM Card: Yes%nPIN: %s%n", pin));
                 } else {
+                    account.createAccount(new Account(name, cnic, phone, accType, address));
                     messageBuilder.append("ATM Card: No\n");
                 }
 

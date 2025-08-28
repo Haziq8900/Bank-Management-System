@@ -1,5 +1,9 @@
 package View;
 
+import Backend.Account;
+import Model.ATMDatabase;
+import Model.AccountDatabase;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -178,73 +182,102 @@ public class MainFrame extends JFrame {
 
         // Action listener for the Login button
         loginButton.addActionListener(e -> {
-            String accountNumber = accountField.getText();
-            String pin = new String(pinField.getPassword());
+            String accountNumber = accountField.getText().trim();
+            String pin = new String(pinField.getPassword()).trim();
 
-            if (accountNumber.length() == 16 && pin.length() == 4) {
-                // Assuming validation passes for now
-                cardLayout.show(mainContentPanel, "ATMView");
-                headerTitleLabel.setText("ATM Services");
-                // Clear the fields after successful login
-                accountField.setText("");
-                pinField.setText("");
-            } else {
+            try {
+                if (accountNumber.isBlank() || pin.isBlank()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Both field required",
+                            "Login Failed",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (accountNumber.length() != 16) {
+                    JOptionPane.showMessageDialog(this,
+                            "Account number must be 16 digits",
+                            "Login Failed",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (pin.length() != 4) {
+                    JOptionPane.showMessageDialog(this,
+                            "Account pin must be 4 digits",
+                            "Login Failed",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Account account = new Account(accountNumber);
+                account.setPin(pin);
+                ATMDatabase atmDatabase = new ATMDatabase();
+                atmDatabase.loginATM(account);
+
+            cardLayout.show(mainContentPanel, "ATMView");
+            headerTitleLabel.setText("ATM Services");
+            accountField.setText("");
+            pinField.setText("");
+            }catch (Exception ex){
                 JOptionPane.showMessageDialog(this,
-                        "Invalid credentials. Account number must be 16 digits and PIN 4 digits.",
+                        ex.getMessage(),
                         "Login Failed",
                         JOptionPane.ERROR_MESSAGE);
             }
-        });
 
-        // Action listener for the Back button
-        backButton.addActionListener(e -> showServiceSelectionPanel());
+    });
+
+    // Action listener for the Back button
+        backButton.addActionListener(e ->
+
+    showServiceSelectionPanel());
 
         return panel;
-    }
+}
 
-    /**
-     * Helper method to create consistently styled buttons with enhanced hover effects.
-     */
-    private JButton createStyledButton(String text, Color bgColor) {
-        JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(250, 90));
-        button.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(bgColor.darker(), 3),
-                BorderFactory.createEmptyBorder(15, 25, 15, 25)
-        ));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent evt) {
-                button.setBackground(bgColor.brighter());
-                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
+/**
+ * Helper method to create consistently styled buttons with enhanced hover effects.
+ */
+private JButton createStyledButton(String text, Color bgColor) {
+    JButton button = new JButton(text);
+    button.setPreferredSize(new Dimension(250, 90));
+    button.setFont(new Font("Segoe UI", Font.BOLD, 26));
+    button.setBackground(bgColor);
+    button.setForeground(Color.WHITE);
+    button.setFocusPainted(false);
+    button.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(bgColor.darker(), 3),
+            BorderFactory.createEmptyBorder(15, 25, 15, 25)
+    ));
+    button.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent evt) {
+            button.setBackground(bgColor.brighter());
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
 
-            @Override
-            public void mouseExited(MouseEvent evt) {
-                button.setBackground(bgColor);
-                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-        });
-        return button;
-    }
+        @Override
+        public void mouseExited(MouseEvent evt) {
+            button.setBackground(bgColor);
+            button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+    });
+    return button;
+}
 
-    /**
-     * Method to navigate back to the service selection panel.
-     */
-    public void showServiceSelectionPanel() {
-        cardLayout.show(mainContentPanel, "ServiceSelection");
-        headerTitleLabel.setText("Haziq Bank Limited"); // Reset header title
-    }
+/**
+ * Method to navigate back to the service selection panel.
+ */
+public void showServiceSelectionPanel() {
+    cardLayout.show(mainContentPanel, "ServiceSelection");
+    headerTitleLabel.setText("Haziq Bank Limited"); // Reset header title
+}
 
-    /**
-     * Controls the visibility of the main header panel.
-     * @param visible true to show the header, false to hide it.
-     */
-    public void setHeaderPanelVisibility(boolean visible) {
-        headerPanel.setVisible(visible);
-    }
+/**
+ * Controls the visibility of the main header panel.
+ *
+ * @param visible true to show the header, false to hide it.
+ */
+public void setHeaderPanelVisibility(boolean visible) {
+    headerPanel.setVisible(visible);
+}
 }

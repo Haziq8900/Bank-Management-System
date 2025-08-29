@@ -1,23 +1,27 @@
 package View;
 
+import Backend.Account;
+import Model.AccountDatabase;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class CloseAccountPanel extends JPanel {
 
     private BankPanel parentBankPanel; // Reference to the BankPanel
     private JTextField accountNumberField;
-    private JPasswordField pinField;
     private JButton closeAccountButton;
     private JLabel messageLabel; // To display feedback messages
-
     public CloseAccountPanel(BankPanel parentBankPanel) {
         this.parentBankPanel = parentBankPanel;
         System.out.println("CloseAccountPanel: Constructor initiated."); // Debug print
+
+
 
         setLayout(new BorderLayout(20, 20));
         setBackground(new Color(245, 245, 245));
@@ -64,15 +68,6 @@ public class CloseAccountPanel extends JPanel {
         accountNumberField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         gbc.gridx = 1; gbc.gridy = 0; inputPanel.add(accountNumberField, gbc);
 
-        // PIN
-        JLabel pinLabel = new JLabel("PIN:");
-        pinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        gbc.gridx = 0; gbc.gridy = 1; inputPanel.add(pinLabel, gbc);
-
-        // --- MODIFICATION HERE: Reduced column count for JPasswordField ---
-        pinField = new JPasswordField(15); // Reduced from 20 to 15 (suggested columns)
-        pinField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        gbc.gridx = 1; gbc.gridy = 1; inputPanel.add(pinField, gbc);
 
         // Nested panel to arrange the message label and input panel
         JPanel centerContainer = new JPanel(new BorderLayout());
@@ -92,7 +87,11 @@ public class CloseAccountPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("CloseAccountPanel: 'Close Account' button clicked. Calling attemptCloseAccount()."); // Debug
-                attemptCloseAccount();
+                try {
+                    attemptCloseAccount();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         controlsPanel.add(closeAccountButton);
@@ -121,70 +120,42 @@ public class CloseAccountPanel extends JPanel {
         });
     }
 
-    private void attemptCloseAccount() {
-        System.out.println("CloseAccountPanel: Entering attemptCloseAccount() method."); // Debug
-        String accountNumber = accountNumberField.getText().trim();
-        String pin = new String(pinField.getPassword()).trim();
+    private void attemptCloseAccount() throws SQLException {
+        try {
+            System.out.println("CloseAccountPanel: Entering attemptCloseAccount() method."); // Debug
+            String accountNumber = accountNumberField.getText().trim();
 
-        System.out.println("CloseAccountPanel: Entered Acc: '" + accountNumber + "', PIN: '" + pin + "'"); // Debug
+            System.out.println("CloseAccountPanel: Entered Acc: '" + accountNumber); // Debug
 
-        if (accountNumber.isEmpty() || pin.isEmpty()) {
-            showMessage("Please enter both account number and PIN.", Color.RED);
-            System.out.println("CloseAccountPanel: Validation failed: Empty fields."); // Debug
-            return;
-        }
+            if (accountNumber.isEmpty()) {
+                showMessage("Please enter account number", Color.RED);
+                System.out.println("CloseAccountPanel: Validation failed: Empty fields."); // Debug
+                return;
+            }
 
-        // --- Placeholder for actual account validation and balance check ---
-        // In a real application, you would interact with your backend/model here
-        // For demonstration, let's simulate the logic with specific accounts:
+            Account account = new Account(accountNumber);
+            AccountDatabase accountDatabase = new AccountDatabase();
+            account.setBalance(accountDatabase.getBalance(account));
 
-        // Simulate Account 1: Valid, Zero Balance (allows closure)
-        if (accountNumber.equals("123456789") && pin.equals("1234")) {
-            System.out.println("CloseAccountPanel: Matched test account 123456789."); // Debug
-            double accountBalance = getAccountBalance(accountNumber);
-            if (accountBalance > 0) {
+
+            if (account.getBalance() > 0) {
                 showMessage("Account balance must be zero to close the account.", Color.ORANGE);
-                System.out.println("CloseAccountPanel: Balance not zero: " + accountBalance); // Debug
+                System.out.println("CloseAccountPanel: Balance not zero: " + account.getBalance()); // Debug
             } else {
-                // Proceed with account closure logic (Simulated)
+                accountDatabase.closeAccount(account);
                 showMessage("Account " + accountNumber + " successfully closed.", Color.BLUE);
                 System.out.println("CloseAccountPanel: Account " + accountNumber + " closed successfully."); // Debug
                 clearFields(); // Clear fields after successful operation
             }
             return; // Exit after processing this account
+        }catch (Exception ex){
+            // If neither simulated account matched
+            showMessage(ex.getMessage(), Color.RED);
+            System.out.println("CloseAccountPanel: Validation failed: Invalid credentials."); // Debug
         }
 
-        // Simulate Account 2: Valid, Non-Zero Balance (prevents closure)
-        if (accountNumber.equals("987654321") && pin.equals("4321")) {
-            System.out.println("CloseAccountPanel: Matched test account 987654321."); // Debug
-            double accountBalance = getAccountBalance(accountNumber); // This will return 500.0 for this account
-            if (accountBalance > 0) {
-                showMessage("Account balance must be zero to close the account.", Color.ORANGE);
-                System.out.println("CloseAccountPanel: Balance not zero: " + accountBalance); // Debug
-            } else {
-                // This block should ideally not be reached for this simulated account
-                showMessage("Account " + accountNumber + " successfully closed.", Color.BLUE);
-                System.out.println("CloseAccountPanel: (ERROR) Account 987654321 should not be closable."); // Debug
-                clearFields();
-            }
-            return; // Exit after processing this account
-        }
-
-        // If neither simulated account matched
-        showMessage("Invalid account number or PIN.", Color.RED);
-        System.out.println("CloseAccountPanel: Validation failed: Invalid credentials."); // Debug
     }
 
-    // This method would typically interact with your Model/Controller to get actual balance
-    private double getAccountBalance(String accountNumber) {
-        System.out.println("CloseAccountPanel: Simulating getAccountBalance for: " + accountNumber); // Debug
-        if (accountNumber.equals("123456789")) {
-            return 0.0; // Simulate zero balance for successful closure
-        } else if (accountNumber.equals("987654321")) {
-            return 500.0; // Simulate non-zero balance
-        }
-        return -1.0; // Indicate account not found or other error (should be caught by initial validation)
-    }
 
     private void showMessage(String message, Color color) {
         messageLabel.setText(message);
@@ -196,6 +167,5 @@ public class CloseAccountPanel extends JPanel {
 
     private void clearFields() {
         accountNumberField.setText("");
-        pinField.setText("");
     }
 }

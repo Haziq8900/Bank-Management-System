@@ -75,4 +75,17 @@ public class AccountDatabase {
         }
     }
 
+    public void closeAccount(Account account) throws SQLException{
+        String query = "DELETE FROM accounts WHERE account_number = ?";
+        try (java.sql.PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, account.getAccount_number());
+            int rowsAffected = statement.executeUpdate();
+            if(rowsAffected != 0){
+                System.out.println("Account with account_number: " + account.getAccount_number() + " has been closed successfully!");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error closing account: " + e.getMessage());
+        }
+    }
+
 }

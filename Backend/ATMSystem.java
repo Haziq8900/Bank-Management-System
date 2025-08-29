@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
+import Model.ATMDatabase;
+
 public class ATMSystem {
 
     private Connection getConnection() throws SQLException {
@@ -148,13 +150,6 @@ public class ATMSystem {
     }
 
     public boolean changePin(long accountNumber, String oldPin, String newPin, String confirmNewPin) {
-        if (accountNumber <= 0) {
-            JOptionPane.showMessageDialog(null,
-                "Invalid account number.",
-                "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
         if (!newPin.equals(confirmNewPin)) {
             JOptionPane.showMessageDialog(null,
                 "New PIN and confirmation PIN do not match.",
@@ -162,51 +157,21 @@ public class ATMSystem {
             return false;
         }
 
-        String checkPinSQL = "SELECT pin FROM accounts WHERE account_number = ?";
-        String updatePinSQL = "UPDATE accounts SET pin = ? WHERE account_number = ?";
+        try {
+            ATMDatabase db = new ATMDatabase(); // create object of database class
+            boolean success = db.changePin(String.valueOf(accountNumber), oldPin, newPin);
 
-        try (Connection conn = getConnection();
-        PreparedStatement checkStmt = conn.prepareStatement(checkPinSQL)) {
-
-            // Verify old PIN
-            checkStmt.setLong(1, accountNumber);
-            ResultSet rs = checkStmt.executeQuery();
-
-            if (rs.next()) {
-                String currentPin = rs.getString("pin");
-
-                if (!currentPin.equals(oldPin)) {
-                    JOptionPane.showMessageDialog(null,
-                        "Old PIN is incorrect.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-
-                // Update PIN
-                try (PreparedStatement updateStmt = conn.prepareStatement(updatePinSQL)) {
-                    updateStmt.setString(1, newPin);
-                    updateStmt.setLong(2, accountNumber);
-                    int rowsUpdated = updateStmt.executeUpdate();
-
-                    if (rowsUpdated > 0) {
-                        JOptionPane.showMessageDialog(null,
-                            "PIN changed successfully!",
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
-                        return true;
-                    } else {
-                        JOptionPane.showMessageDialog(null,
-                            "Failed to change PIN.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                        return false;
-                    }
-                }
+            if (success) {
+                JOptionPane.showMessageDialog(null,
+                    "PIN changed successfully!",
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             } else {
                 JOptionPane.showMessageDialog(null,
-                    "Account not found.",
+                    "Invalid account number or old PIN.",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,
                 "Database error: " + e.getMessage(),

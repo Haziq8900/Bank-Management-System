@@ -29,14 +29,16 @@ public class ATMDatabase {
         }
     }
 
-    public boolean changePin(String accountNumber, String oldPin, String newPin) throws SQLException {
+    public void changePin(String accountNumber, String oldPin, String newPin) throws SQLException {
         String query = "UPDATE accounts SET pin = ? WHERE account_number = ? AND pin = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, newPin);
             statement.setString(2, accountNumber);
             statement.setString(3, oldPin);
             int rowsUpdated = statement.executeUpdate();
-            return rowsUpdated > 0; // true if updated, false if wrong oldPin/account
+            if (rowsUpdated == 0) {
+                throw new SQLException("Account not found");
+            }
         } catch (SQLException e) {
             throw new SQLException("Error changing PIN: " + e.getMessage());
         }

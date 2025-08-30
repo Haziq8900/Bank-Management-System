@@ -2,12 +2,10 @@ package View;
 
 import Backend.Account;
 import Model.ATMDatabase;
-import Model.AccountDatabase;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -117,68 +115,208 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Helper method to create the new ATM login panel.
+     * Helper method to create the new ATM login panel with enhanced UI/UX.
      */
     private JPanel createATMLoginPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(245, 245, 245));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        // Main panel with a more visually appealing background
+        JPanel panel = new JPanel(new BorderLayout(20, 20));
+        panel.setBackground(new Color(240, 248, 255)); // Light blue background matching ATM main menu
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
 
-        JLabel titleLabel = new JLabel("Please enter your ATM details", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        titleLabel.setForeground(new Color(50, 50, 50));
+        // Card panel to hold the login form with a card-like appearance
+        JPanel cardPanel = new JPanel(new GridBagLayout());
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(30, 40, 30, 40)
+        ));
+
+        // Add drop shadow effect to the card
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                        BorderFactory.createLineBorder(new Color(220, 220, 220), 1)
+                ),
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createEmptyBorder(1, 1, 1, 1),
+                        BorderFactory.createEmptyBorder(25, 35, 25, 35)
+                )
+        ));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(12, 12, 12, 12);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        // Create a stylish ATM icon header
+        JPanel iconPanel = new JPanel(new BorderLayout());
+        iconPanel.setBackground(new Color(25, 118, 210)); // Professional blue
+        iconPanel.setPreferredSize(new Dimension(80, 80));
+        iconPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Make it circular
+        iconPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(25, 118, 210).darker(), 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+
+        JLabel atmLabel = new JLabel("ATM", SwingConstants.CENTER);
+        atmLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        atmLabel.setForeground(Color.WHITE);
+        iconPanel.add(atmLabel, BorderLayout.CENTER);
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        panel.add(titleLabel, gbc);
+        gbc.anchor = GridBagConstraints.CENTER;
+        cardPanel.add(iconPanel, gbc);
 
-        JLabel accountLabel = new JLabel("Account Number:", SwingConstants.RIGHT);
-        accountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        // Title with improved styling
+        JLabel titleLabel = new JLabel("ATM Login", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        titleLabel.setForeground(new Color(25, 118, 210)); // Professional blue
+        gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(accountLabel, gbc);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 12, 30, 12);
+        cardPanel.add(titleLabel, gbc);
+
+        // Account Number Field with icon and better styling
+        JPanel accountPanel = new JPanel(new BorderLayout(10, 0));
+        accountPanel.setBackground(Color.WHITE);
+
+        JLabel accountIcon = new JLabel("\uD83D\uDCB3"); // Credit card emoji
+        accountIcon.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        accountIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        accountIcon.setPreferredSize(new Dimension(40, 40));
+
+        JPanel accountFieldPanel = new JPanel(new BorderLayout());
+        accountFieldPanel.setBackground(Color.WHITE);
+
+        JLabel accountLabel = new JLabel("Account Number");
+        accountLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        accountLabel.setForeground(new Color(100, 100, 100));
 
         JTextField accountField = new JTextField(16);
-        accountField.setPreferredSize(new Dimension(250, 35));
-        accountField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(accountField, gbc);
+        accountField.setPreferredSize(new Dimension(250, 40));
+        accountField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        accountField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(200, 200, 200)),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
 
-        JLabel pinLabel = new JLabel("PIN:", SwingConstants.RIGHT);
-        pinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        accountFieldPanel.add(accountLabel, BorderLayout.NORTH);
+        accountFieldPanel.add(accountField, BorderLayout.CENTER);
+
+        accountPanel.add(accountIcon, BorderLayout.WEST);
+        accountPanel.add(accountFieldPanel, BorderLayout.CENTER);
+
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(pinLabel, gbc);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 12, 20, 12);
+        cardPanel.add(accountPanel, gbc);
+
+        // PIN Field with icon and better styling
+        JPanel pinPanel = new JPanel(new BorderLayout(10, 0));
+        pinPanel.setBackground(Color.WHITE);
+
+        JLabel pinIcon = new JLabel("\uD83D\uDD12"); // Lock emoji
+        pinIcon.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        pinIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        pinIcon.setPreferredSize(new Dimension(40, 40));
+
+        JPanel pinFieldPanel = new JPanel(new BorderLayout());
+        pinFieldPanel.setBackground(Color.WHITE);
+
+        JLabel pinLabel = new JLabel("PIN");
+        pinLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        pinLabel.setForeground(new Color(100, 100, 100));
 
         JPasswordField pinField = new JPasswordField(4);
-        pinField.setPreferredSize(new Dimension(250, 35));
-        pinField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(pinField, gbc);
+        pinField.setPreferredSize(new Dimension(250, 40));
+        pinField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        pinField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(200, 200, 200)),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
 
-        JButton loginButton = createStyledButton("Login", new Color(255, 152, 0));
-        loginButton.setPreferredSize(new Dimension(120, 50));
-        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        pinFieldPanel.add(pinLabel, BorderLayout.NORTH);
+        pinFieldPanel.add(pinField, BorderLayout.CENTER);
+
+        pinPanel.add(pinIcon, BorderLayout.WEST);
+        pinPanel.add(pinFieldPanel, BorderLayout.CENTER);
+
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(30, 10, 10, 10);
-        panel.add(loginButton, gbc);
+        gbc.insets = new Insets(0, 12, 30, 12);
+        cardPanel.add(pinPanel, gbc);
 
-        JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        backButton.setForeground(new Color(25, 118, 210));
+        // Help text for users
+        JLabel helpText = new JLabel("Account number: 16 digits | PIN: 4 digits", SwingConstants.CENTER);
+        helpText.setFont(new Font("Segoe UI", Font.ITALIC, 12));
+        helpText.setForeground(new Color(120, 120, 120));
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.insets = new Insets(0, 12, 20, 12);
+        cardPanel.add(helpText, gbc);
+
+        // Login Button with improved styling
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBackground(new Color(46, 204, 113)); // Green color from ATM main menu
+        loginButton.setFocusPainted(false);
+        loginButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(39, 174, 96), 1),
+                BorderFactory.createEmptyBorder(12, 25, 12, 25)
+        ));
+        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                loginButton.setBackground(new Color(39, 174, 96));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                loginButton.setBackground(new Color(46, 204, 113));
+            }
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.insets = new Insets(10, 12, 15, 12);
+        cardPanel.add(loginButton, gbc);
+
+        // Back Button with improved styling
+        JButton backButton = new JButton("Back to Main Menu");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        backButton.setForeground(new Color(52, 152, 219)); // Blue from ATM main menu
+        backButton.setBackground(Color.WHITE);
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
+        backButton.setFocusPainted(false);
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        gbc.gridy = 4;
-        gbc.insets = new Insets(0, 10, 10, 10);
-        panel.add(backButton, gbc);
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                backButton.setForeground(new Color(41, 128, 185));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                backButton.setForeground(new Color(52, 152, 219));
+            }
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.insets = new Insets(0, 12, 10, 12);
+        cardPanel.add(backButton, gbc);
+
+        // Add the card panel to the main panel
+        panel.add(cardPanel, BorderLayout.CENTER);
 
         // Action listener for the Login button
         loginButton.addActionListener(e -> {
@@ -186,25 +324,34 @@ public class MainFrame extends JFrame {
             String pin = new String(pinField.getPassword()).trim();
 
             try {
+                // Input validation with improved error messages
                 if (accountNumber.isBlank() || pin.isBlank()) {
                     JOptionPane.showMessageDialog(this,
-                            "Both field required",
+                            "Please enter both account number and PIN",
                             "Login Failed",
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if (accountNumber.length() != 16) {
                     JOptionPane.showMessageDialog(this,
-                            "Account number must be 16 digits",
+                            "Account number must be exactly 16 digits",
                             "Login Failed",
                             JOptionPane.ERROR_MESSAGE);
+                    accountField.setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0, 0, 2, 0, Color.RED),
+                            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                    ));
                     return;
                 }
                 if (pin.length() != 4) {
                     JOptionPane.showMessageDialog(this,
-                            "Account pin must be 4 digits",
+                            "PIN must be exactly 4 digits",
                             "Login Failed",
                             JOptionPane.ERROR_MESSAGE);
+                    pinField.setBorder(BorderFactory.createCompoundBorder(
+                            BorderFactory.createMatteBorder(0, 0, 2, 0, Color.RED),
+                            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+                    ));
                     return;
                 }
 
@@ -213,26 +360,23 @@ public class MainFrame extends JFrame {
                 ATMDatabase atmDatabase = new ATMDatabase();
                 atmDatabase.loginATM(account);
 
-            cardLayout.show(mainContentPanel, "ATMView");
-            headerTitleLabel.setText("ATM Services");
-            accountField.setText("");
-            pinField.setText("");
-            }catch (Exception ex){
+                cardLayout.show(mainContentPanel, "ATMView");
+                headerTitleLabel.setText("ATM Services");
+                accountField.setText("");
+                pinField.setText("");
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
                         "Login Failed",
                         JOptionPane.ERROR_MESSAGE);
             }
+        });
 
-    });
-
-    // Action listener for the Back button
-        backButton.addActionListener(e ->
-
-    showServiceSelectionPanel());
+        // Action listener for the Back button
+        backButton.addActionListener(e -> showServiceSelectionPanel());
 
         return panel;
-}
+    }
 
 /**
  * Helper method to create consistently styled buttons with enhanced hover effects.

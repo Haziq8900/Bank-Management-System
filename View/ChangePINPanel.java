@@ -1,11 +1,15 @@
 package View;
 
+import Backend.Account;
+import Model.ATMDatabase;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder; // Import for EmptyBorder
 import javax.swing.border.LineBorder; // Import for LineBorder
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class ChangePINPanel extends JPanel {
     private ATMPanel parentATMPanel;
@@ -44,14 +48,40 @@ public class ChangePINPanel extends JPanel {
         gbc.insets = new Insets(15, 10, 15, 10); // Increased insets for more spacing around components
         gbc.anchor = GridBagConstraints.EAST; // Labels align right by default
 
-        // --- Current PIN Field ---
+        // --- Account Number Field ---
         gbc.gridx = 0; gbc.gridy = 0;
+        JLabel accountNumberLabel = new JLabel("Account Number");
+        accountNumberLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+        accountNumberLabel.setForeground(new Color(80, 80, 80));
+        inputContainerPanel.add(accountNumberLabel, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST; // Text field aligns left
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill horizontally
+        gbc.weightx = 1.0; // Give all extra horizontal space to this column
+        JTextField accountNumberField = new JTextField(15);
+        accountNumberField.setFont(new Font("Consolas", Font.PLAIN, 20)); // Consistent font size for input
+        accountNumberField.setForeground(Color.BLACK); // Ensure text color is black
+        accountNumberField.setPreferredSize(new Dimension(accountNumberField.getPreferredSize().width, 40)); // Fixed height
+        accountNumberField.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(180, 180, 180), 1),
+            new EmptyBorder(5, 10, 5, 10)
+        ));
+        inputContainerPanel.add(accountNumberField, gbc);
+
+        // Reset weights for the next row to prevent unintended expansion
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.EAST; // Reset anchor for next label
+
+        // --- Current PIN Field ---
+        gbc.gridx = 0; gbc.gridy = 1;
         JLabel currentPinLabel = new JLabel("Current PIN");
         currentPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         currentPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(currentPinLabel, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridx = 1; gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST; // Text field aligns left
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make the component fill horizontally
         gbc.weightx = 1.0; // Give all extra horizontal space to this column
@@ -71,13 +101,13 @@ public class ChangePINPanel extends JPanel {
         gbc.anchor = GridBagConstraints.EAST; // Reset anchor for next label
 
         // --- New PIN Field ---
-        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridx = 0; gbc.gridy = 2;
         JLabel newPinLabel = new JLabel("New PIN");
         newPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         newPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(newPinLabel, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1; gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
@@ -97,13 +127,13 @@ public class ChangePINPanel extends JPanel {
         gbc.anchor = GridBagConstraints.EAST;
 
         // --- Confirm New PIN Field ---
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0; gbc.gridy = 3;
         JLabel confirmPinLabel = new JLabel("Confirm New PIN");
         confirmPinLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         confirmPinLabel.setForeground(new Color(80, 80, 80));
         inputContainerPanel.add(confirmPinLabel, gbc);
 
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1; gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
@@ -122,7 +152,7 @@ public class ChangePINPanel extends JPanel {
         gbc.weightx = 0.0;
 
         // --- Change PIN Button ---
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2; // Span across both columns
         gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
         gbc.insets = new Insets(20, 10, 10, 10); // More top padding for the button
@@ -140,39 +170,49 @@ public class ChangePINPanel extends JPanel {
 
         // --- Action Listener for Change PIN Button ---
         changePinButton.addActionListener(e -> {
+            String accountNumber = accountNumberField.getText();
             String currentPin = new String(currentPinField.getPassword());
             String newPin = new String(newPinField.getPassword());
             String confirmPin = new String(confirmPinField.getPassword());
 
-            if (currentPin.isEmpty() || newPin.isEmpty() || confirmPin.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "All fields are required.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (newPin.length() < 4 || newPin.length() > 6) { // Example PIN length validation
-                JOptionPane.showMessageDialog(this, "New PIN must be between 4 and 6 digits.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (!newPin.equals(confirmPin)) {
-                JOptionPane.showMessageDialog(this, "New PIN and Confirm PIN do not match.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (currentPin.equals(newPin)) {
-                JOptionPane.showMessageDialog(this, "New PIN cannot be the same as the current PIN.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
 
-            // In a real application, you would integrate with your backend here:
-            // Example: parentATMPanel.getATMController().processPinChange(currentPin, newPin);
-            JOptionPane.showMessageDialog(this,
-                    "Your PIN has been successfully changed.",
-                    "PIN Change Successful", JOptionPane.INFORMATION_MESSAGE);
-            
-            // Clear fields after successful PIN change
-            currentPinField.setText("");
-            newPinField.setText("");
-            confirmPinField.setText("");
+            try {
+                if (accountNumber.isEmpty() || currentPin.isEmpty() || newPin.isEmpty() || confirmPin.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "All fields are required.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (newPin.length() != 4) { // Example PIN length validation
+                    JOptionPane.showMessageDialog(this, "New PIN must be between 4 and 6 digits.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!newPin.equals(confirmPin)) {
+                    JOptionPane.showMessageDialog(this, "New PIN and Confirm PIN do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (currentPin.equals(newPin)) {
+                    JOptionPane.showMessageDialog(this, "New PIN cannot be the same as the current PIN.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-            parentATMPanel.showATMMainMenu(); // Go back to ATM menu after action
+                ATMDatabase atmDatabase = new ATMDatabase();
+                atmDatabase.changePin(accountNumber, currentPin, newPin);
+
+                JOptionPane.showMessageDialog(this,
+                        "Your PIN has been successfully changed.",
+                        "PIN Change Successful", JOptionPane.INFORMATION_MESSAGE);
+
+                // Clear fields after successful PIN change
+                accountNumberField.setText("");
+                currentPinField.setText("");
+                newPinField.setText("");
+                confirmPinField.setText("");
+
+                parentATMPanel.showATMMainMenu(); // Go back to ATM menu after action
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,
+                        ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 

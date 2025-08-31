@@ -34,9 +34,9 @@ public class ChangePINPanel extends JPanel {
             new LineBorder(new Color(255, 179, 102), 3, true), // Softer orange border, rounded
             new EmptyBorder(10, 60, 10, 60) // Generous internal padding
         ));
-        inputContainerPanel.setPreferredSize(new Dimension(600, 320)); // Adjusted size for three fields
-        inputContainerPanel.setMaximumSize(new Dimension(600, 320));
-        inputContainerPanel.setMinimumSize(new Dimension(500, 320));
+        inputContainerPanel.setPreferredSize(new Dimension(600, 450)); // Increased height to accommodate all fields
+        inputContainerPanel.setMaximumSize(new Dimension(600, 450));
+        inputContainerPanel.setMinimumSize(new Dimension(500, 450));
 
         // Wrapper panel to visually center the inputContainerPanel within the BorderLayout.CENTER
         JPanel centerWrapperPanel = new JPanel(new GridBagLayout());
@@ -45,7 +45,7 @@ public class ChangePINPanel extends JPanel {
         add(centerWrapperPanel, BorderLayout.CENTER);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(15, 10, 15, 10); // Increased insets for more spacing around components
+        gbc.insets = new Insets(20, 10, 20, 10); // Further increased vertical insets for better spacing
         gbc.anchor = GridBagConstraints.EAST; // Labels align right by default
 
         // --- Account Number Field ---
@@ -155,18 +155,10 @@ public class ChangePINPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2; // Span across both columns
         gbc.anchor = GridBagConstraints.CENTER; // Center the button horizontally
-        gbc.insets = new Insets(20, 10, 10, 10); // More top padding for the button
+        gbc.insets = new Insets(30, 10, 10, 10); // Increased top padding for better separation from fields
         JButton changePinButton = createStyledButton("Change PIN", new Color(220, 120, 20)); // Themed button
         inputContainerPanel.add(changePinButton, gbc);
 
-        // --- Back Button ---
-        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
-        backButton.addActionListener(e -> parentATMPanel.showATMMainMenu());
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15)); // More vertical space below
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
 
         // --- Action Listener for Change PIN Button ---
         changePinButton.addActionListener(e -> {
@@ -221,14 +213,14 @@ public class ChangePINPanel extends JPanel {
      */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(220, 40)); // Consistent button size
-        button.setFont(new Font("Segoe UI", Font.BOLD, 19));
+        button.setPreferredSize(new Dimension(250, 45)); // Increased button size for better visibility
+        button.setFont(new Font("Segoe UI", Font.BOLD, 20)); // Slightly larger font
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(bgColor.darker(), 2),
-                BorderFactory.createEmptyBorder(10, 20, 10, 20)
+                BorderFactory.createEmptyBorder(10, 25, 10, 25) // Increased horizontal padding
         ));
         button.addMouseListener(new MouseAdapter() {
             @Override

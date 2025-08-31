@@ -65,19 +65,6 @@ public class BalanceInquiryPanel extends JPanel {
         balanceValueLabel.setForeground(new Color(40, 120, 180));
         balanceDisplayContainer.add(balanceValueLabel, gbc);
 
-        // --- Back Button ---
-        JButton backButton = createStyledButton("Back", new Color(96, 125, 139));
-        backButton.addActionListener(e -> {
-            if (loadingTimer != null && loadingTimer.isRunning()) {
-                loadingTimer.stop();
-            }
-            parentATMPanel.showATMMainMenu();
-        });
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
 
         // --- Simulate Balance Fetching Logic ---
         loadingTimer = new Timer(1800, e -> {

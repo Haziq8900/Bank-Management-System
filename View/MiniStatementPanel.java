@@ -42,18 +42,6 @@ public class MiniStatementPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(statementArea);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Back button to return to the ATM Main Menu
-        // This is the button you wanted to create
-        JButton backButton = parentATMPanel.createATMMenuButton("Back", new Color(96, 125, 139));
-        backButton.setPreferredSize(new Dimension(250, 60));
-        
-        // --- UPDATED ACTION LISTENER ---
-        // The key "ATMMainMenu" is used to show the panel with the four services
-        backButton.addActionListener(e -> parentATMPanel.showATMSubPanel("ATMMainMenu"));
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(240, 248, 255));
-        buttonPanel.add(backButton);
-        add(buttonPanel, BorderLayout.SOUTH);
     }
 }

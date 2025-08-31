@@ -18,15 +18,15 @@ public class ATMPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // Consistent light background
 
+        // Create sidebar panel for buttons
+        JPanel sidebarPanel = createSidebarPanel();
+        add(sidebarPanel, BorderLayout.WEST);
+
         // Initialize CardLayout and its container
         cardLayout = new CardLayout();
         mainContentPanel = new JPanel(cardLayout);
         mainContentPanel.setBackground(getBackground()); // Match ATMPanel background
         add(mainContentPanel, BorderLayout.CENTER);
-
-        // --- Add ATM Main Menu Panel ---
-        ATMMainMenuPanel atmMainMenuPanel = new ATMMainMenuPanel(this);
-        mainContentPanel.add(atmMainMenuPanel, "ATMMainMenu");
 
         // --- Add ATM Service Sub-Panels (ONLY ATM specific ones) ---
         // These are the panels that remain part of ATM services
@@ -42,24 +42,14 @@ public class ATMPanel extends JPanel {
         // --- NEW: Add the MiniStatementPanel to the CardLayout ---
         MiniStatementPanel miniStatementPanel = new MiniStatementPanel(this);
         mainContentPanel.add(miniStatementPanel, "MiniStatement");
-        
+
         // REMOVED:
         // DepositPanel depositPanel = new DepositPanel(this); // This line and its addition are removed
         // FundTransferPanel fundTransferPanel = new FundTransferPanel(this); // This line and its addition are removed
         // BillPaymentPanel billPaymentPanel = new BillPaymentPanel(this); // This line and its addition are removed
 
-
-        // Add a back button for the whole ATM section
-        JButton backButton = createATMMenuButton("Back to Main Menu", new Color(96, 125, 139)); // Gray color
-        backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel());
-
-        JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
-        bottomButtonPanel.setBackground(getBackground());
-        bottomButtonPanel.add(backButton);
-        add(bottomButtonPanel, BorderLayout.SOUTH);
-
-        // Show the initial ATM main menu when this panel is displayed
-        showATMMainMenu();
+        // Show the first service panel when this panel is displayed
+        showATMSubPanel("CashWithdrawal");
     }
 
     /**
@@ -100,17 +90,89 @@ public class ATMPanel extends JPanel {
     }
 
     /**
-     * Navigates back to the main ATM menu.
+     * Navigates back to the service selection panel.
+     * This is used by the back buttons in the ATM service panels.
      */
     public void showATMMainMenu() {
-        cardLayout.show(mainContentPanel, "ATMMainMenu");
+        parentMainFrame.showServiceSelectionPanel();
     }
     /**
      * Method to control the visibility of the MainFrame's header panel.
-     * This acts as a bridge from ATMMainMenuPanel to MainFrame.
+     * This is used by the Change PIN functionality to hide the header when needed.
      * @param visible true to show, false to hide.
      */
     public void setMainFrameHeaderVisibility(boolean visible) {
         parentMainFrame.setHeaderPanelVisibility(visible);
+    }
+
+    /**
+     * Creates the sidebar panel with buttons for ATM services.
+     */
+    private JPanel createSidebarPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(new Color(52, 73, 94)); // Dark blue background
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setPreferredSize(new Dimension(280, 0)); // Fixed width for sidebar
+
+        // --- ATM Service Buttons ---
+        JButton cashWithdrawalButton = createSidebarButton("Cash Withdrawal", new Color(46, 204, 113)); // Green
+        JButton balanceInquiryButton = createSidebarButton("Balance Inquiry", new Color(52, 152, 219)); // Blue
+        JButton changePINButton = createSidebarButton("Change PIN", new Color(220, 120, 20)); // Orange
+        JButton miniStatementButton = createSidebarButton("Mini Statement", new Color(127, 140, 141)); // Gray
+        JButton backButton = createSidebarButton("Back to Main Menu", new Color(96, 125, 139)); // Gray
+
+        // --- Add Action Listeners ---
+        cashWithdrawalButton.addActionListener(e -> showATMSubPanel("CashWithdrawal"));
+        balanceInquiryButton.addActionListener(e -> showATMSubPanel("BalanceInquiry"));
+        changePINButton.addActionListener(e -> {
+            showATMSubPanel("ChangePIN");
+            setMainFrameHeaderVisibility(false);
+        });
+        miniStatementButton.addActionListener(e -> showATMSubPanel("MiniStatement"));
+        backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
+
+        // --- Add Buttons to Panel with spacing ---
+        panel.add(cashWithdrawalButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
+        panel.add(balanceInquiryButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
+        panel.add(changePINButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
+        panel.add(miniStatementButton);
+        panel.add(Box.createVerticalGlue()); // Push remaining buttons to bottom
+        panel.add(backButton);
+
+        return panel;
+    }
+
+    /**
+     * Helper method to create consistently styled buttons for Sidebar.
+     */
+    public JButton createSidebarButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Full width, fixed height
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 16)); // Font for sidebar buttons
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(bgColor.darker(), 1),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                button.setBackground(bgColor.brighter());
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                button.setBackground(bgColor);
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+        return button;
     }
 }

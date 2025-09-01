@@ -1,5 +1,7 @@
 package View;
 
+import Backend.Account;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -12,9 +14,11 @@ public class ATMPanel extends JPanel {
     private MainFrame parentMainFrame; // Reference to the MainFrame
     private JPanel mainContentPanel; // Panel for CardLayout of ATM services
     private CardLayout cardLayout; // CardLayout for ATM service sub-panels
+    private Backend.Account account; // Account object for ATM operations
 
     public ATMPanel(MainFrame parentMainFrame) {
         this.parentMainFrame = parentMainFrame;
+        this.account = null;
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 245)); // Consistent light background
 
@@ -103,6 +107,25 @@ public class ATMPanel extends JPanel {
      */
     public void setMainFrameHeaderVisibility(boolean visible) {
         parentMainFrame.setHeaderPanelVisibility(visible);
+    }
+
+    /**
+     * Sets the account for this panel and its sub-panels.
+     * @param account The account to use for ATM operations.
+     */
+    public void setAccount(Account account) {
+        this.account = account;
+        // Pass the account to the CashWithdrawalPanel
+        CashWithdrawalPanel cashWithdrawalPanel = (CashWithdrawalPanel) mainContentPanel.getComponent(0);
+        cashWithdrawalPanel.setAccount(account);
+    }
+
+    /**
+     * Gets the account for this panel.
+     * @return The account used for ATM operations.
+     */
+    public Backend.Account getAccount() {
+        return account;
     }
 
     /**

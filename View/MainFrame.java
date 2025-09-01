@@ -360,6 +360,10 @@ public class MainFrame extends JFrame {
                 ATMDatabase atmDatabase = new ATMDatabase();
                 atmDatabase.loginATM(account);
 
+                // Pass the account to the ATMPanel
+                ATMPanel atmPanel = (ATMPanel) mainContentPanel.getComponent(mainContentPanel.getComponentCount() - 2);
+                atmPanel.setAccount(account);
+
                 cardLayout.show(mainContentPanel, "ATMView");
                 headerTitleLabel.setText("ATM Services");
                 accountField.setText("");

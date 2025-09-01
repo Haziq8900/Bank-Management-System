@@ -123,4 +123,17 @@ public class Account {
             throw new SQLException("Insufficient Funds");
         }
     }
+
+    public void withdraw(double amount) throws SQLException {
+        AccountDatabase accountDatabase = new AccountDatabase();
+        this.setBalance(accountDatabase.getBalance(this));
+        if (this.getBalance() >= amount) {
+            boolean success = accountDatabase.deductBalance(this, amount);
+            if (!success) {
+                throw new SQLException("Failed to withdraw funds");
+            }
+        } else {
+            throw new SQLException("Insufficient Funds");
+        }
+    }
 }

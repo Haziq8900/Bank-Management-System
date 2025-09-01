@@ -1,12 +1,15 @@
 package View;
 
+import Backend.Account;
+import Model.AccountDatabase;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
+import java.sql.SQLException;
 
 public class BalanceInquiryPanel extends JPanel {
 
@@ -57,7 +60,7 @@ public class BalanceInquiryPanel extends JPanel {
 
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 0, 0); // No extra space below balance value
-        
+
         // NEW: Dedicated label for the balance value, now without the prefix
         balanceValueLabel = new JLabel("Fetching balance...", SwingConstants.CENTER);
         // Adjusted font size to fit better, keeping it large and impactful
@@ -66,9 +69,9 @@ public class BalanceInquiryPanel extends JPanel {
         balanceDisplayContainer.add(balanceValueLabel, gbc);
 
 
-        // --- Simulate Balance Fetching Logic ---
+        // --- Fetch Actual Balance Logic ---
         loadingTimer = new Timer(1800, e -> {
-            updateBalanceDisplay(generateRandomBalance());
+            updateBalanceDisplay(fetchActualBalance());
             balanceDisplayContainer.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(new Color(76, 175, 80), 3, true),
                 new EmptyBorder(40, 60, 40, 60)
@@ -105,17 +108,28 @@ public class BalanceInquiryPanel extends JPanel {
      */
     public void updateBalanceDisplay(double balance) {
         balanceInfoPrefixLabel.setVisible(true); // Show prefix once balance is loaded
-        balanceValueLabel.setText("$" + String.format("%,.2f", balance)); // Only show the value here
+        balanceValueLabel.setText("PKR " + String.format("%,.2f", balance)); // Only show the value here
         balanceValueLabel.setFont(new Font("Consolas", Font.BOLD, 42)); // Keep this large for the value
         balanceValueLabel.setForeground(new Color(76, 175, 80)); // Green for successful display
     }
 
     /**
-     * Helper method to simulate fetching a random balance.
+     * Helper method to fetch the actual account balance from the database.
      */
-    private double generateRandomBalance() {
-        Random rand = new Random();
-        return 100.00 + (20000.00 - 100.00) * rand.nextDouble();
+    private double fetchActualBalance() {
+        try {
+            Account account = parentATMPanel.getAccount();
+            if (account != null) {
+                AccountDatabase accountDatabase = new AccountDatabase();
+                return accountDatabase.getBalance(account);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error fetching balance: " + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+        return 0.0; // Return 0 if there's an error or no account
     }
 
     /**

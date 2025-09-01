@@ -1,18 +1,23 @@
 package View;
 
+import Backend.Account;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder; // Required for EmptyBorder
 import javax.swing.border.LineBorder; // Required for LineBorder
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class CashWithdrawalPanel extends JPanel {
 
     private ATMPanel parentATMPanel;
+    private Account account;
 
     public CashWithdrawalPanel(ATMPanel parentATMPanel) {
         this.parentATMPanel = parentATMPanel;
+        this.account = null;
         setLayout(new BorderLayout(0, 30)); // Add vertical gap for better spacing
         setBackground(new Color(230, 240, 250)); // Consistent light bluish background
 
@@ -85,27 +90,44 @@ public class CashWithdrawalPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter an amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            if (account == null) {
+                JOptionPane.showMessageDialog(this, "No account selected. Please enter your account details first.", "Account Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try {
                 double amount = Double.parseDouble(amountText);
-                if (amount <= 0) {
+                if (amount < 1) {
                     JOptionPane.showMessageDialog(this, "Please enter a positive amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                // In a real application, you would integrate with your backend here:
-                // Example: parentATMPanel.getATMController().processCashWithdrawal(amount);
-                JOptionPane.showMessageDialog(this,
-                        String.format("Successfully withdrew $%,.2f.%nYour transaction is being processed.", amount),
-                        "Withdrawal Successful", JOptionPane.INFORMATION_MESSAGE);
-                
-                amountField.setText(""); // Clear field after successful withdrawal
 
-                // Optionally, navigate back or update balance display
-                // parentATMPanel.showATMMainMenu();
+                try {
+                    account.withdraw(amount);
+                    JOptionPane.showMessageDialog(this,
+                            String.format("Successfully withdrew $%,.2f.%nYour transaction is being processed.", amount),
+                            "Withdrawal Successful", JOptionPane.INFORMATION_MESSAGE);
 
+                    amountField.setText(""); // Clear field after successful withdrawal
+
+                    // Optionally, navigate back or update balance display
+                    // parentATMPanel.showATMMainMenu();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Withdrawal Failed", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid amount. Please enter numbers only (e.g., 100.00).", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
+
+    /**
+     * Sets the account for this panel.
+     * @param account The account to use for withdrawals.
+     */
+    public void setAccount(Backend.Account account) {
+        this.account = account;
     }
 
     /**

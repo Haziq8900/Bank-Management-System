@@ -74,6 +74,7 @@ public class BankPanel extends JPanel {
         JButton depositButton = createSidebarButton("Deposit Funds", new Color(155, 89, 182)); // Purple
         JButton fundTransferButton = createSidebarButton("Fund Transfer", new Color(230, 126, 34)); // Orange
         JButton openAccountButton = createSidebarButton("Open New Account", new Color(39, 174, 96)); // Light Green
+        JButton issueATMButton = createSidebarButton("Issue ATM", new Color(0, 150, 136)); // Teal for Issue ATM
         JButton closeAccountButton = createSidebarButton("Close Account", new Color(231, 76, 60)); // Red for Close Account
         JButton backButton = createSidebarButton("Back to Main Menu", new Color(96, 125, 139)); // Gray
 
@@ -83,6 +84,12 @@ public class BankPanel extends JPanel {
         fundTransferButton.addActionListener(e -> showBankSubPanel("FundTransfer"));
         openAccountButton.addActionListener(e -> showBankSubPanel("OpenAccount"));
         closeAccountButton.addActionListener(e -> showBankSubPanel("CloseAccount"));
+        issueATMButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, 
+                "Issue ATM is in process!",
+                "ATM Card Issued", 
+                JOptionPane.INFORMATION_MESSAGE);
+        });
         backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
 
         // --- Add Buttons to Panel with spacing ---
@@ -93,6 +100,8 @@ public class BankPanel extends JPanel {
         panel.add(fundTransferButton);
         panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
         panel.add(openAccountButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
+        panel.add(issueATMButton);
         panel.add(Box.createRigidArea(new Dimension(0, 15))); // Add spacing
         panel.add(closeAccountButton);
         panel.add(Box.createVerticalGlue()); // Push remaining buttons to bottom

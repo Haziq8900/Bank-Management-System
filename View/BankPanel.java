@@ -55,6 +55,8 @@ public class BankPanel extends JPanel {
         CloseAccountPanel closeAccountPanel = new CloseAccountPanel(this); // New Close Account Panel
         mainContentPanel.add(closeAccountPanel, "CloseAccount");
 
+        IssueATMPanel issueATMPanel = new IssueATMPanel(this); // New Close Account Panel
+        mainContentPanel.add(issueATMPanel, "IssueATM");
         // Show the initial dashboard
         showDashboard();
     }
@@ -84,12 +86,7 @@ public class BankPanel extends JPanel {
         fundTransferButton.addActionListener(e -> showBankSubPanel("FundTransfer"));
         openAccountButton.addActionListener(e -> showBankSubPanel("OpenAccount"));
         closeAccountButton.addActionListener(e -> showBankSubPanel("CloseAccount"));
-        issueATMButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, 
-                "Issue ATM is in process!",
-                "ATM Card Issued", 
-                JOptionPane.INFORMATION_MESSAGE);
-        });
+        issueATMButton.addActionListener(e -> showBankSubPanel("IssueATM"));
         backButton.addActionListener(e -> parentMainFrame.showServiceSelectionPanel()); // Go back to MainFrame's service selection
 
         // --- Add Buttons to Panel with spacing ---

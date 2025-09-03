@@ -87,5 +87,29 @@ public class AccountDatabase {
             throw new SQLException("Error closing account: " + e.getMessage());
         }
     }
+    
+    public void issueATM(Account account) throws SQLException{
+        String checkQuery = "SELECT account_number FROM accounts WHERE account_number = ? AND (pin IS NULL OR pin = '')";
+        try (java.sql.PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+            checkStatement.setString(1, account.getAccount_number());
+            try (java.sql.ResultSet resultSet = checkStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String updateQuery = "UPDATE accounts SET pin = ? WHERE account_number = ?";
+                    try (java.sql.PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                        updateStatement.setString(1, account.getPin());
+                        updateStatement.setString(2, account.getAccount_number());
+                        int rowsAffected = updateStatement.executeUpdate();
+                        if (rowsAffected == 0) {
+                            throw new SQLException("Failed to update PIN for account: " + account.getAccount_number());
+                        }
+                    }
+                } else {
+                    throw new SQLException("Account not found or PIN already set for account: " + account.getAccount_number());
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error issuing ATM: " + e.getMessage());
+        }
+    }
 
 }

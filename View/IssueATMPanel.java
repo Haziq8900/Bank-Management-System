@@ -23,14 +23,14 @@ public class IssueATMPanel extends JPanel {
 
         JLabel titleLabel = new JLabel("Issue ATM Card", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 38));
-        titleLabel.setForeground(new Color(230, 126, 34)); // Orange color for the Fund Transfer theme
+        titleLabel.setForeground(new Color(0, 150, 136)); // Orange color for the Fund Transfer theme
         titleLabel.setBorder(new EmptyBorder(25, 0, 15, 0));
         add(titleLabel, BorderLayout.NORTH);
 
         JPanel inputContainerPanel = new JPanel(new GridBagLayout());
         inputContainerPanel.setBackground(new Color(255, 255, 255));
         inputContainerPanel.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(255, 179, 102), 3, true), // Softer orange border, rounded
+                new LineBorder(new Color(0, 150, 130), 3, true), // Softer orange border, rounded
                 new EmptyBorder(40, 60, 40, 60)
         ));
         inputContainerPanel.setPreferredSize(new Dimension(650, 350));
@@ -121,7 +121,7 @@ public class IssueATMPanel extends JPanel {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(30, 10, 10, 10);
-        JButton transferButton = createStyledButton("Transfer Funds", new Color(230, 126, 34));
+        JButton transferButton = createStyledButton("Transfer Funds", new Color(0, 150, 136));
         inputContainerPanel.add(transferButton, gbc);
 
         transferButton.addActionListener(e -> {

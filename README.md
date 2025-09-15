@@ -12,7 +12,7 @@ It provides essential banking functionalities with a user-friendly interface and
 - Real-time Database Integration with MySQL
 
 ## 🎥 Demo
-➡️ [Click here to watch full demo]([https://www.linkedin.com/your-post-link](https://www.linkedin.com/posts/haziq-khan-501b8a363_java-mysql-swing-activity-7373428534209507328-afL-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFpowlEBylMi5Oj5rSEj2rbQpoL1ihttrz4))  
+➡️ [Click here to watch full demo](https://www.linkedin.com/posts/haziq-khan-501b8a363_java-mysql-swing-activity-7373428534209507328-afL-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFpowlEBylMi5Oj5rSEj2rbQpoL1ihttrz4)  
 
 ![Demo GIF](screenshots/demo.gif)  
 

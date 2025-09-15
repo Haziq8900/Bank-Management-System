@@ -8,7 +8,7 @@ It provides essential banking functionalities with a user-friendly interface and
 - Open **Current / Saving Accounts**
 - Deposit and Transfer Funds
 - Cash Withdrawal
-- Bill Payments
+- Close Accounts
 - Real-time Database Integration with MySQL
 
 ## 🎥 Demo
@@ -24,23 +24,26 @@ It provides essential banking functionalities with a user-friendly interface and
 ![Database](screenshots/screen2.png)  
 
 ## 🛠 Tech Stack
-- Java
-- Java Swing
-- MySQL
+- Java  
+- Java Swing  
+- MySQL  
 
-## 👨‍💻 Author
-Developed by  Haziq Khan and Ahtisham Sheikh
+## 👨‍💻 Authors
+- **Haziq Khan**  
+- **Ahtisham Sheikh**
+
+---
 
 ## 🗄️ Database Setup
 Run the following SQL script to create the required table:
 
 ```sql
-create table accounts (
-account_number varchar(16) primary key,
-name varchar(30) not null,
-cnic varchar(13) unique not null,
-phone varchar(11) unique not null,
-account_type smallint, balance double,
-pin varchar(4)
+CREATE TABLE accounts (
+  account_number VARCHAR(16) PRIMARY KEY,
+  name VARCHAR(30) NOT NULL,
+  cnic VARCHAR(13) UNIQUE NOT NULL,
+  phone VARCHAR(11) UNIQUE NOT NULL,
+  account_type SMALLINT,
+  balance DOUBLE,
+  pin VARCHAR(4)
 );
-```

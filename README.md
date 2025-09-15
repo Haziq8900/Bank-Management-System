@@ -24,7 +24,7 @@ It provides essential banking functionalities with a user-friendly interface and
 ![ATM Interface](screenshots/ATM_Interface.png)  
 
 ### Database View
-![Database](screenshots/DataBase.png)  
+![Database](screenshots/Database.png)  
 
 ## 🛠 Tech Stack
 - Java  

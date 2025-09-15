@@ -17,11 +17,14 @@ It provides essential banking functionalities with a user-friendly interface and
 ![Demo GIF](screenshots/demo.gif)  
 
 ## 📸 Screenshots
-### Dashboard
-![Dashboard](screenshots/screen1.png)  
+### Bank
+![Bank Services](screenshots/Bank_Services_Interface.png)  
+
+### ATM
+![ATM Interface](screenshots/ATM_Interface.png)  
 
 ### Database View
-![Database](screenshots/screen2.png)  
+![Database](screenshots/DataBase.png)  
 
 ## 🛠 Tech Stack
 - Java  

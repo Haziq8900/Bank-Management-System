@@ -32,8 +32,11 @@ It provides essential banking functionalities with a user-friendly interface and
 - MySQL  
 
 ## 👨‍💻 Authors
-- **Haziq Khan**  
-- **Ahtisham Sheikh**
+- **Haziq Khan**
+## 👨‍💻 Contibutors
+- 
+- <a href="https://github.com/Ahtisham-1214">
+- **Ahtisham Sheikh**</a>
 
 ---
 

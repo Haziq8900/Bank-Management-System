@@ -34,7 +34,6 @@ It provides essential banking functionalities with a user-friendly interface and
 ## 👨‍💻 Authors
 - **Haziq Khan**
 ## 👨‍💻 Contibutors
-- 
 - <a href="https://github.com/Ahtisham-1214">
 - **Ahtisham Sheikh**</a>
 
